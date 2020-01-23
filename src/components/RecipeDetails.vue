@@ -1,5 +1,7 @@
 <template>
     <div>
+        <h1>Lägg till recept</h1>
+        <p>Här kan du ladda upp ditt eget recept. Följ stegen för att börja</p>
         <b-form @submit="onSubmit" @reset="onReset">
             <b-form-group
                 id="input-group-1">
@@ -80,7 +82,7 @@ export default {
                 return response.json()
             }).then(result => {
                 this.onReset()
-                this.$emit('recipeRegistered', result.id)
+                this.$emit('recipeRegistered', result)
             })
         }
     }   

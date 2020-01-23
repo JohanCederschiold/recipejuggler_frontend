@@ -1,12 +1,13 @@
 <template>
     <div>
-        <h1>Lägg till recept</h1>
-        <p>Här kan du ladda upp ditt eget recept. Följ stegen för att börja</p>
-        <app-recipedetails  v-on:recipeRegistered="registerId"></app-recipedetails>
+        <app-recipedetails v-if="recipeId === null"  v-on:recipeRegistered="registerId"></app-recipedetails>
+        <app-ingredients v-if="recipeId !== null" :recipeId="recipeId"></app-ingredients>
+
     </div>
 </template>
 <script>
 import Details from '../components/RecipeDetails.vue'
+import Ingredients from '../components/RecipeIngredients.vue'
 export default {
     data: function(){
         return {
@@ -19,7 +20,8 @@ export default {
         }
     },
     components: {
-        'app-recipedetails': Details
+        'app-recipedetails': Details,
+        'app-ingredients': Ingredients
     }   
 }
 </script>
