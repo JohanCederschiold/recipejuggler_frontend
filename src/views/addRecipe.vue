@@ -2,8 +2,7 @@
     <div>
         <h1>Lägg till recept</h1>
         <p>Här kan du ladda upp ditt eget recept. Följ stegen för att börja</p>
-        <app-recipedetails  v-on:recipeRegistered="registerId">
-        </app-recipedetails>
+        <app-recipedetails  v-on:recipeRegistered="registerId"></app-recipedetails>
     </div>
 </template>
 <script>
