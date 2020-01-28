@@ -40,9 +40,18 @@ export default {
         onSave() {
             if (this.value === null || this.units === null || this.units === '' ) {
                 alert('Set values')
+            } else if (!isNaN(this.units)) {
+                this.$emit('calculatedAmount', this.calculateValue())  
             } else {
-                this.$emit('calculatedAmount', this.calculateValue())
+                let fixedNumber = this.tryToFixNaN()
+                if(!isNaN(fixedNumber)) {
+                    this.units = fixedNumber
+                    this.$emit('calculatedAmount', this.calculateValue())
+                }
             }
+        },
+        tryToFixNaN() {
+            return this.units.replace(',', '.')
         },
         calculateValue(){
             switch(this.value) {

@@ -20,12 +20,14 @@
         <app-new-unit v-on:unitChosen="setUnit" v-if="this.currentIngredientUnit === null"></app-new-unit>
         <app-weight v-on:calculatedAmount="amountReceived" v-if="this.currentIngredientUnit === 'WEIGHT'"></app-weight>
         <app-volume v-on:calculatedAmount="amountReceived" v-if="this.currentIngredientUnit === 'VOLUME'"></app-volume>
+        <app-amount v-on:calculatedAmount="amountReceived" v-if="this.currentIngredientUnit === 'AMOUNT'"></app-amount>
     </div>
 </template>
 <script>
 import Volume from '../components/Volume.vue'
 import NewUnit from '../components/RegisterUnit.vue'
 import Weight from '../components/Weight.vue'
+import Amount from '../components/Amount.vue'
 export default {
     props: ['recipeId'],
     data: function() {
@@ -188,7 +190,8 @@ export default {
     components: {
         'app-volume': Volume,
         'app-weight': Weight,
-        'app-new-unit': NewUnit
+        'app-new-unit': NewUnit,
+        'app-amount': Amount
     }  
     
 }

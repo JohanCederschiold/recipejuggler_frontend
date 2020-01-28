@@ -31,7 +31,7 @@
 export default {
     data: function() {
         return {
-            options: {'1': 'ML', '2': 'CL', '3':'DL', '4': 'L'},
+            options: {'1': 'ML', '2': 'KRM', '3':'TSK', '4': 'CL', '5': 'MSK', '6': 'DL', '7': 'L'},
             value: null,
             units: null
         }
@@ -40,19 +40,34 @@ export default {
         onSave() {
             if (this.value === null || this.units === null || this.units === '' ) {
                 alert('Set values')
+            } else if (!isNaN(this.units)) {
+                this.$emit('calculatedAmount', this.calculateValue())  
             } else {
-                this.$emit('calculatedAmount', this.calculateValue())
+                let fixedNumber = this.tryToFixNaN()
+                if(!isNaN(fixedNumber)) {
+                    this.units = fixedNumber
+                    this.$emit('calculatedAmount', this.calculateValue())
+                }
             }
+        },
+        tryToFixNaN() {
+            return this.units.replace(',', '.')
         },
         calculateValue(){
             switch(this.value) {
                 case '1':
                     return this.units
                 case '2':
-                    return this.units * 10
+                    return this.units
                 case '3':
+                    return this.units * 5
+                case '4':
+                    return this.units * 10
+                case '5':
+                    return this.units * 15
+                case '6':
                     return this.units * 100
-                case '4': 
+                case '7': 
                     return this.units * 1000
                 default:
                     return -1
