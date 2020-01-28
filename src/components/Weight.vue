@@ -31,7 +31,7 @@
 export default {
     data: function() {
         return {
-            options: {'1': 'ML', '2': 'CL', '3':'DL', '4': 'L'},
+            options: {'1': 'GR', '2': 'HG', '3':'KG'},
             value: null,
             units: null
         }
@@ -49,10 +49,8 @@ export default {
                 case '1':
                     return this.units
                 case '2':
-                    return this.units * 10
-                case '3':
                     return this.units * 100
-                case '4': 
+                case '3':
                     return this.units * 1000
                 default:
                     return -1
