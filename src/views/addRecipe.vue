@@ -1,7 +1,8 @@
 <template>
     <div>
-        <app-recipedetails v-if="recipeId === null"  v-on:recipeRegistered="registerId"></app-recipedetails>
-        <app-ingredients v-if="recipeId !== null" :recipeId="recipeId"></app-ingredients>
+        {{registeredRecipe}}
+        <app-recipedetails v-if="registeredRecipe === null"  v-on:recipeRegistered="registerRecipe"></app-recipedetails>
+        <app-ingredients v-if="registeredRecipe !== null" :currentRecipe="registeredRecipe"></app-ingredients>
 
     </div>
 </template>
@@ -11,12 +12,12 @@ import Ingredients from '../components/RecipeIngredients.vue'
 export default {
     data: function(){
         return {
-            recipeId: null       
+            registeredRecipe: null       
         }
     },
     methods: {
-        registerId(newid) {
-            this.recipeId = newid
+        registerRecipe(newid) {
+            this.registeredRecipe = newid
         }
     },
     components: {

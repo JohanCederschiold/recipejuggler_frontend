@@ -1,8 +1,8 @@
 <template>
     <div>
         <h1>Registrera ingredienser</h1>
-        <p>Registrera ingredienserna till receptet <strong>{{ recipeId.title }}</strong></p>
-        <h2>Ingredienser till {{recipeId.title}}</h2>
+        <p>Registrera ingredienserna till receptet <strong>{{ currentRecipe.title }}</strong></p>
+        <h2>Ingredienser till {{currentRecipe.title}}</h2>
         <p v-for="recipeIngredient in registeredRecipeIngredients" :key="recipeIngredient.name">
             {{ getAdjustedAmountString(recipeIngredient.amount, recipeIngredient.unit) }} 
             {{ recipeIngredient.name }}
@@ -30,7 +30,7 @@ import NewUnit from '../components/RegisterUnit.vue'
 import Weight from '../components/Weight.vue'
 import Amount from '../components/Amount.vue'
 export default {
-    props: ['recipeId'],
+    props: ['currentRecipe'],
     data: function() {
         return {
             ingredients: [],
@@ -166,7 +166,7 @@ export default {
         registerNewRecipeIngredient() {
             let postRequest = JSON.stringify(
                 { 
-                    recipeId : this.recipeId.id , 
+                    recipeId : this.currentRecipe.id , 
                     ingredientId : this.ingredientId, 
                     amount : this.amount 
                 })
