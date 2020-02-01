@@ -21,6 +21,7 @@
         <app-weight v-on:calculatedAmount="amountReceived" v-if="this.currentIngredientUnit === 'WEIGHT'"></app-weight>
         <app-volume v-on:calculatedAmount="amountReceived" v-if="this.currentIngredientUnit === 'VOLUME'"></app-volume>
         <app-amount v-on:calculatedAmount="amountReceived" v-if="this.currentIngredientUnit === 'AMOUNT'"></app-amount>
+        <b-button variant="success">Klar...inga fler ingredienser att registrera</b-button>
     </div>
 </template>
 <script>

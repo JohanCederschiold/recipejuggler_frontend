@@ -11,7 +11,7 @@ import Ingredients from '../components/RecipeIngredients.vue'
 export default {
     data: function(){
         return {
-            recipeId: null            
+            recipeId: null       
         }
     },
     methods: {
