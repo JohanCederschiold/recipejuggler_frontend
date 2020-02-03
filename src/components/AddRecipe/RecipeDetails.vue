@@ -20,6 +20,30 @@
                 ></b-form-input>
             </b-form-group>
 
+            <b-form-group id="input-group-3">
+                <b-form-input
+                id="input-3"
+                v-model="minutesToPrepare"
+                :placeholder="minutesPlaceholderMessage"
+                ></b-form-input>
+            </b-form-group>
+
+            <b-form-group id="input-group-4">
+                <b-form-input
+                id="input-4"
+                v-model="noServings"
+                :placeholder="servingsPlaceholderMessage"
+                ></b-form-input>
+            </b-form-group>
+
+            <b-form-group id="input-group-5">
+                <b-form-input
+                id="input-5"
+                v-model="description"
+                :placeholder="descriptionPlaceholderMessage"
+                ></b-form-input>
+            </b-form-group>
+
             <b-button type="submit" variant="primary">Submit</b-button>
             <b-button type="reset" variant="danger">Reset</b-button>
         </b-form>
@@ -31,9 +55,15 @@ export default {
         return {
             recipeName: null,
             recipeOwner: null,
-            namePlaceholderMessage: 'Namnge receptet',
+            minutesToPrepare: null,
+            noServings: null,
+            description: null,
+            namePlaceholderMessage: 'Namn på receptet',
             ownerPlaceholderMessage: 'Ditt namn',
-            localeEndpoint: '/recipe/add'
+            localeEndpoint: '/recipe/add',
+            minutesPlaceholderMessage: 'Antal minuter för tillagning',
+            servingsPlaceholderMessage: 'Antal portioner',
+            descriptionPlaceholderMessage: 'Kort beskrivning'
         }
     },
     computed: {
@@ -49,8 +79,14 @@ export default {
         onReset: function() {
             this.recipeName = null
             this.recipeOwner = null
+            this.minutesToPrepare= null,
+            this.noServings = null,
+            this.description = null,
             this.namePlaceholderMessage = 'Namnge receptet'
             this.ownerPlaceholderMessage = 'Ditt namn'
+            this.minutesPlaceholderMessage = 'Antal minuter för tillagning'
+            this.servingsPlaceholderMessage = 'Antal portioner'
+            this.descriptionPlaceholderMessage = 'Kort beskrivning'
             
         },
         checkAndSend() {
@@ -60,6 +96,15 @@ export default {
             if(this.recipeOwner === null) {
                 this.ownerPlaceholderMessage = 'Du måste ge ett namn'
             }
+            if(this.minutesToPrepare === null){
+                this.minutesPlaceholderMessage = 'Du måste ange ett minutantal'
+            }
+            if(this.noServings === null ){
+                this.servingsPlaceholderMessage = 'Du måste ange ett antal portioner'
+            }
+            if(this.description === null ){
+                this.descriptionPlaceholderMessage = "Du måste ange en beskrivning"
+            }
             if(this.recipeName !== null && this.recipeOwner !== null ){
                 this.registerRecipe()
             }
@@ -68,7 +113,10 @@ export default {
             let postRequest = JSON.stringify(
                 { 
                     title : this.recipeName , 
-                    owner : this.recipeOwner 
+                    owner : this.recipeOwner, 
+                    preparationTimeMinutes: this.minutesToPrepare,
+                    noPortions: this.noServings,
+                    instructions: this.description
                 })
 
             fetch(this.renderedEndpoint, {
