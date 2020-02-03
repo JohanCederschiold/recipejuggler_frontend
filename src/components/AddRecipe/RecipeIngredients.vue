@@ -3,13 +3,12 @@
         <h1>Registrera ingredienser</h1>
         <p>Registrera ingredienserna till receptet <strong>{{ currentRecipe.title }}</strong></p>
         <h2>Ingredienser till {{currentRecipe.title}}</h2>
-        <p v-for="recipeIngredient in registeredRecipeIngredients" :key="recipeIngredient.name">
+        <p v-for="(recipeIngredient, index) in registeredRecipeIngredients" :key="recipeIngredient.name">
             {{ getAdjustedAmountString(recipeIngredient.amount, recipeIngredient.unit) }} 
             {{ recipeIngredient.name }}
+            <b-button @click="removeRecipeIngredient(recipeIngredient.id, index)"> Ta bort
+            </b-button>
         </p>
-        <p>{{ingredientName}}  {{ingredientId}}</p>
-
-
             <label for="input-with-list">Lägg till ingrediens</label>
             <b-form-input list="input-list" id="input-with-list" v-model="ingredientName" 
             placeholder="Write ingredient" :disabled="preventSubmit"></b-form-input>
@@ -25,10 +24,10 @@
     </div>
 </template>
 <script>
-import Volume from '../components/Volume.vue'
-import NewUnit from '../components/RegisterUnit.vue'
-import Weight from '../components/Weight.vue'
-import Amount from '../components/Amount.vue'
+import Volume from './Volume.vue'
+import NewUnit from './RegisterUnit.vue'
+import Weight from './Weight.vue'
+import Amount from './Amount.vue'
 export default {
     props: ['currentRecipe'],
     data: function() {
@@ -40,6 +39,7 @@ export default {
             localeGetEndpoint: '/ingredient/all',
             localePostEndpoint: '/ingredient/add',
             localePostRecipeIngredientEndpoint: '/recipe-ingredient/add',
+            localeDeleteRecipeIngredientEndpoint: '/recipe-ingredient/delete/',
             ingredientName: null,
             amount: null,
             ingredientId: null,
@@ -56,6 +56,9 @@ export default {
         },
         renderedPostRecipeIngredientEndpoint: function() {
             return this.$store.state.mainEndpoint + this.localePostRecipeIngredientEndpoint
+        },
+        renderedDeleteRecipeIngredientEndpoint: function() {
+            return this.$store.state.mainEndpoint + this.localeDeleteRecipeIngredientEndpoint
         }
     },
     methods: {
@@ -66,6 +69,18 @@ export default {
                 this.ingredientsJson = result
                 for (let i = 0; i < result.length ; i++ ) {
                    this.ingredients.push(result[i].name)
+                }
+            })
+        },
+        removeRecipeIngredient(ingredientId, index) {
+            this.registeredRecipeIngredients.splice(index, 1)
+            this.deleteRecipeIngredient(ingredientId)
+        },
+        deleteRecipeIngredient(ingredientId) {
+            fetch(this.renderedDeleteRecipeIngredientEndpoint + ingredientId, {
+                method: 'DELETE',
+                headers: {
+                    'credentials': 'include'
                 }
             })
         },
@@ -103,8 +118,9 @@ export default {
             this.ingredientId= null
             this.preventSubmit = false
         },
-        pushToRegistered(){
+        pushToRegistered(registeredId){
             let registeredRecipeIngredient = {
+                id: registeredId,
                 name: this.ingredientName,
                 amount: this.amount,
                 unit: this.currentIngredientUnit
@@ -173,7 +189,6 @@ export default {
                     ingredientId : this.ingredientId, 
                     amount : this.amount 
                 })
-            alert(postRequest)
             fetch(this.renderedPostRecipeIngredientEndpoint, {
                 body: postRequest,
                 headers: {
@@ -181,10 +196,10 @@ export default {
                 },
                 method: 'POST'
             }).then( response => {
-                if (response.status === 201) {
-                    this.pushToRegistered()
-                    this.onReset()
-                }
+                return response.json()
+            }).then( result => {
+                this.pushToRegistered(result.id)
+                this.onReset()
             })
         },
     },

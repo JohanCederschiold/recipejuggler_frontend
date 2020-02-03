@@ -61,7 +61,6 @@ export default {
                 this.ownerPlaceholderMessage = 'Du måste ge ett namn'
             }
             if(this.recipeName !== null && this.recipeOwner !== null ){
-                //alert(this.recipeName + ' by ' + this.recipeOwner)
                 this.registerRecipe()
             }
         },

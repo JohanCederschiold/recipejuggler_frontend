@@ -23,9 +23,9 @@
                      <b-button variant="outline-danger" v-if="index !==stepInstructions.length -1"  @click="moveDown(index)">Ner</b-button>
                 </li>
             </ol>
+            <b-button variant="success" @click="registerRecipe">Klar...inga fler steg att registrera
+            </b-button>
         </div>
-        {{ currentlyChanginStep }}
-        {{ stepInstructions }}
     </div>
 </template>
 <script>
@@ -38,7 +38,7 @@ export default {
             changedInstruction: null,
             instruction: null,
             localeEndpoint: '/steps/add',
-            stepInstructions: []
+            stepInstructions: [],
         }
     },
     computed: {
@@ -85,24 +85,37 @@ export default {
             }
         },
         registerRecipe() {
-            let postRequest = JSON.stringify(
-                { 
-                    title : this.recipeName , 
-                    owner : this.recipeOwner 
-                })
-
             fetch(this.renderedEndpoint, {
-                body: postRequest,
+                body: this.createRecipeStepObject(),
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 method: 'POST'
             }).then( response => {
-                return response.json()
-            }).then(result => {
-                this.onReset()
-                this.$emit('recipeRegistered', result)
+                if (response.status === 201) {
+                    this.closeAndReset()
+                }
             })
+        },
+        createRecipeStepObject() {
+            let stepsToRegister = []
+            for (let i = 0 ; i < this.stepInstructions.length ; i++) {
+                let stepSequence = i + 1
+                let step = {
+                    sequence: stepSequence,
+                    instruction: this.stepInstructions[i]
+                }
+                stepsToRegister.push(step)
+            }
+            let wrapper = {
+                recipeId: this.currentRecipe.id,
+                steps: stepsToRegister
+            }
+            let jsonSteps = JSON.stringify(wrapper)
+            return jsonSteps
+        },
+        closeAndReset() {
+            this.$emit('closeAndReset')
         }
     }   
 }
