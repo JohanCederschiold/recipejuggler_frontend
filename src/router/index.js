@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import AddRecipe from '../views/AddRecipe.vue'
+import AllRecipes from '../views/AllRecipes.vue'
 import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
@@ -15,7 +16,12 @@ const routes = [
     path: '/home',
     name: 'home',
     component: Home
-  }
+  },
+  {
+    path: '/allrecipes',
+    name: 'allrecipes',
+    component: AllRecipes
+  },
 ]
 
 const router = new VueRouter({

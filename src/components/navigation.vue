@@ -14,6 +14,11 @@
                         Add Recipe
                     </router-link>
                 </b-nav-item>
+                <b-nav-item href="#">
+                    <router-link to="/allrecipes" class="nav-link">
+                        All Recipes
+                    </router-link>
+                </b-nav-item>
             </b-navbar-nav>
             </b-collapse>
         </b-navbar>
