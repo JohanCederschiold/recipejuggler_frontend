@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div v-for="recipe in allRecipes" :key="recipe.id" @click="chooseRecipe(recipe)">{{recipe}}</div>
-        <app-recipe v-if="chosenRecipe !== ''" :recipe="chosenRecipe" :show="modalShow" v-on:closeModal="closeModal" ></app-recipe>
+        <div v-for="recipe in allRecipes" :key="recipe.id" @click="chooseRecipe(recipe)">{{recipe.title}}</div>
+        <app-recipe v-if="chosenRecipe !== ''" :recipe="chosenRecipe" :show="modalShow" v-on:closeModal="closeModal"></app-recipe>
     </div>
 </template>
 <script>

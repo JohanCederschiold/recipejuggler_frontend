@@ -19,6 +19,11 @@
                         All Recipes
                     </router-link>
                 </b-nav-item>
+                 <b-nav-item href="#">
+                    <router-link to="/list" class="nav-link">
+                        List
+                    </router-link>
+                </b-nav-item>
             </b-navbar-nav>
             </b-collapse>
         </b-navbar>

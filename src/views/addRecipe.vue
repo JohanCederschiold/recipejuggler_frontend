@@ -36,7 +36,7 @@ export default {
         'app-recipedetails': Details,
         'app-ingredients': Ingredients,
         'app-steps': Steps
-    }   
+    }
 }
 </script>
 <style scoped>
