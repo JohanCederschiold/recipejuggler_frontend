@@ -4,10 +4,11 @@
             {{chosenIds}}
         </div>
         <h1>Ingredients to get</h1>
+        <input type="text" v-model="noServings" />
         <div>
             <ul>
                 <li v-for="ingredient in accumulatedIngredients" :key="ingredient.ingredientName">
-                    {{getUnitString(ingredient.amount, ingredient.units)}} of {{ingredient.ingredientName}}
+                    {{getUnitString(ingredient.amount * noServings, ingredient.units)}} of {{ingredient.ingredientName}}
                 </li>
             </ul>
         </div>
@@ -34,7 +35,8 @@ export default {
         return {
             localEndpoint: '/recipe-ingredient/post/listRecipeIngredients',
             recipeAndIngredients: [],
-            accumulatedIngredients: []
+            accumulatedIngredients: [],
+            noServings: 4
         }
     },
     computed : {
