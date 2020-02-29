@@ -10,8 +10,14 @@ export default new Vuex.Store({
   },
   mutations: {
     addChosenDrinkId(state, recipe) {
+      recipe.id = new Date().getTime()
       state.chosenDrinks.push(recipe)
-    } 
+    },
+    removeRecipe(state, idToRemove) {
+      const newRecipes = state.chosenDrinks.filter(item => item.id !== idToRemove)
+      console.log(newRecipes)
+      state.chosenDrinks = newRecipes
+    }
   },
   actions: {
   },

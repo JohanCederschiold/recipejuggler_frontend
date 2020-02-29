@@ -16,7 +16,7 @@
                     {{step.instruction}}
                 </li>
             </ol>
-        <b-button class="mt-3" block @click="sendRecipeId(completeRecipe.recipeId, completeRecipe.noPortions)">Add to list</b-button>
+        <b-button class="mt-3" block @click="sendRecipeId(completeRecipe.recipeId, completeRecipe.title)">Add to list</b-button>
         <b-button class="mt-3" block @click="hideModal">Close Me</b-button>
         </b-modal>
     </div>
@@ -40,12 +40,12 @@ export default {
         hideModal(){
             this.$emit('closeModal')
         },
-        sendRecipeId(recipeId, noPortions) {
+        sendRecipeId(recipeId, recipeTitle) {
             /*
             const ingredientsPerPortion = ingredients.map( item =>  { return { ...item, amount: item.amount / this.recipe.noPortions }})
             this.$store.commit('addAccumulatedIngredients', ingredientsPerPortion)*/
             
-            this.$store.commit('addChosenDrinkId', { id: recipeId, portions: noPortions})
+            this.$store.commit('addChosenDrinkId', { recipeId: recipeId, title: recipeTitle})
 
         }, 
         getAmountsAsString(amount, unit) {
