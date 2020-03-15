@@ -1,8 +1,5 @@
 <template>
     <div>
-        <div>
-            {{chosenIds}}
-        </div>
         <h1>Ingredients to get</h1>
         <input type="text" v-model="noServings" />
         <div>
@@ -118,5 +115,9 @@ export default {
 }
 </script>
 <style scoped>
-
+    h1 {
+        padding: 50;
+        margin: 50;
+        color: 'red';
+    }
 </style>

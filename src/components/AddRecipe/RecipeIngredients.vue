@@ -20,7 +20,9 @@
         <app-weight v-on:calculatedAmount="amountReceived" v-if="this.currentIngredientUnit === 'WEIGHT'"></app-weight>
         <app-volume v-on:calculatedAmount="amountReceived" v-if="this.currentIngredientUnit === 'VOLUME'"></app-volume>
         <app-amount v-on:calculatedAmount="amountReceived" v-if="this.currentIngredientUnit === 'AMOUNT'"></app-amount>
-        <b-button variant="success" @click="noMoreRecipeIngredients">Klar...inga fler ingredienser att registrera</b-button>
+        <div>
+            <b-button variant="success" @click="noMoreRecipeIngredients" :disabled="notFinishedWithIngredients">Klar...inga fler ingredienser att registrera</b-button>
+        </div>
     </div>
 </template>
 <script>
@@ -40,6 +42,7 @@ export default {
             localePostEndpoint: '/ingredient/add',
             localePostRecipeIngredientEndpoint: '/recipe-ingredient/add',
             localeDeleteRecipeIngredientEndpoint: '/recipe-ingredient/delete/',
+            notFinishedWithIngredients: true,
             ingredientName: null,
             amount: null,
             ingredientId: null,
@@ -99,6 +102,7 @@ export default {
         amountReceived(volumeValue){
             this.amount = volumeValue
             this.registerNewRecipeIngredient()
+            this.notFinishedWithIngredients = false
         },
         onSubmit(event){
             event.preventDefault()

@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="screen">
         <h1>Home</h1>
-        <p>This is home</p>
+        <p class="screen">This is home</p>
     </div>
 </template>
 <script>
@@ -10,5 +10,7 @@ export default {
 }
 </script>
 <style scoped>
-
+    .screen {
+        margin: 2rem;
+    }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="screen">
         <app-recipedetails v-if="currentRegistrationStep === 1"  v-on:recipeRegistered="registerRecipe"></app-recipedetails>
         <app-ingredients v-if="currentRegistrationStep === 2" :currentRecipe="registeredRecipe"
         v-on:allIngredientsRegistered="allIngredientsRegistered"></app-ingredients>
@@ -40,5 +40,7 @@ export default {
 }
 </script>
 <style scoped>
-
+    .screen {
+        margin: 2rem;
+    }
 </style>

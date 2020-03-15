@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div class="screen">
+        <h1>All recipes</h1>
         <div v-for="recipe in allRecipes" :key="recipe.id" @click="chooseRecipe(recipe)">{{recipe.title}}</div>
         <app-recipe v-if="chosenRecipe !== ''" :recipe="chosenRecipe" :show="modalShow" v-on:closeModal="closeModal"></app-recipe>
     </div>
@@ -43,5 +44,7 @@ export default {
 }
 </script>
 <style scoped>
-
+    .screen {
+        margin: 2rem;
+    }
 </style>

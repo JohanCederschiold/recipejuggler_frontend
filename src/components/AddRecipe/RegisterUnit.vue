@@ -5,7 +5,7 @@
             åt dig. För att kunna göra det behöver vi din hjälp med att bestämma vilket mått den 
             skall ha.
         </div>
-        <div><strong>VOLUME</strong> är för ingredienser som normalt kommer att med något litermått (ex mililiter). Som ris eller mjölk.</div>
+        <div><strong>VOLUME</strong> är för ingredienser som normalt kommer att med något volymmått (ex mililiter). Som ris eller mjölk.</div>
         <div><strong>WEIGHT</strong> är för ingredienser som normalt kommer att doseras i gramvikter</div>
         <div><strong>AMOUNT</strong> är för ingredienser som normalt kommer att doseras i antal (ex tre äggulor).</div>
         <b-form inline>
