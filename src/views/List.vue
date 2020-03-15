@@ -1,6 +1,9 @@
 <template>
-    <div>
-        <h1>Ingredients to get</h1>
+    <div class="screen">
+        <h1>Ingredienser</h1>
+        <label>
+            Antal portioner
+        </label>
         <input type="text" v-model="noServings" />
         <div>
             <ul>
@@ -9,17 +12,14 @@
                 </li>
             </ul>
         </div>
-        <h1>Based on these recipes</h1>
+        <h1>Recept</h1>
         <div>
             <ul>
                 <li v-for="recipe in this.$store.state.chosenDrinks" :key="recipe.id">
-                    {{recipe}}
+                    {{recipe.title}}
                     <b-button variant="danger" @click="removeRecipe(recipe.id)">Remove</b-button>
                 </li>
             </ul>
-        </div>
-        <div>
-            {{accumulatedIngredients}}
         </div>
     </div>
 </template>
@@ -120,4 +120,14 @@ export default {
         margin: 50;
         color: 'red';
     }
+
+    .screen {
+        margin: 2rem;
+    }
+
+    input {
+        margin-left: 1rem;
+        padding: 0.5rem;
+    }
+
 </style>

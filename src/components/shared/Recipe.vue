@@ -1,6 +1,8 @@
 <template>
     <div>
-        <b-modal hide-footer v-model="show" :title="recipe.title">
+        <b-modal hide-footer hide-header v-model="show">
+            <h1>{{recipe.title}}</h1>
+            
             <div>{{completeRecipe.instructions}}</div>
             <div>Tillagning: {{completeRecipe.preparationTimeMinutes}} minuter</div>
             <div>Antal portioner: {{completeRecipe.noPortions}} personer</div>

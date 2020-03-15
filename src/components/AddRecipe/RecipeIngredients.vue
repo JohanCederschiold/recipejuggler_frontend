@@ -16,12 +16,14 @@
 
         <b-button type="submit" variant="primary" @click="onSubmit" >Submit</b-button>
         <b-button type="reset" variant="danger" @click="onReset">Reset</b-button>
-        <app-new-unit v-on:unitChosen="setUnit" v-if="this.currentIngredientUnit === null"></app-new-unit>
+        <b-modal hide-footer hide-header v-model="show">
+            <app-new-unit v-on:unitChosen="setUnit" v-if="this.currentIngredientUnit === null"></app-new-unit>
+        </b-modal>
         <app-weight v-on:calculatedAmount="amountReceived" v-if="this.currentIngredientUnit === 'WEIGHT'"></app-weight>
         <app-volume v-on:calculatedAmount="amountReceived" v-if="this.currentIngredientUnit === 'VOLUME'"></app-volume>
         <app-amount v-on:calculatedAmount="amountReceived" v-if="this.currentIngredientUnit === 'AMOUNT'"></app-amount>
         <div>
-            <b-button variant="success" @click="noMoreRecipeIngredients" :disabled="notFinishedWithIngredients">Klar...inga fler ingredienser att registrera</b-button>
+            <b-button variant="success" @click="noMoreRecipeIngredients" :disabled="notFinishedWithIngredients">Klar!</b-button>
         </div>
     </div>
 </template>
@@ -62,6 +64,9 @@ export default {
         },
         renderedDeleteRecipeIngredientEndpoint: function() {
             return this.$store.state.mainEndpoint + this.localeDeleteRecipeIngredientEndpoint
+        },
+        show: function () {
+            return this.currentIngredientUnit === null
         }
     },
     methods: {

@@ -1,15 +1,14 @@
 <template>
     <div>
-        <h1>Nice, new ingredients</h1>
-        <div>Den här ingrediensen känner vi inte till sedan tidigare, så vi skall registrera den 
-            åt dig. För att kunna göra det behöver vi din hjälp med att bestämma vilket mått den 
-            skall ha.
+        <h1>Ny ingrediens</h1>
+        <div class="description">
+            Den här ingrediensen känner vi inte till sedan tidigare. För att vi skall kunna Registrera
+            den behöver vi veta vilken enhet den skall ha (för att automatiskt kunna summera ingredienser).
         </div>
-        <div><strong>VOLUME</strong> är för ingredienser som normalt kommer att med något volymmått (ex mililiter). Som ris eller mjölk.</div>
-        <div><strong>WEIGHT</strong> är för ingredienser som normalt kommer att doseras i gramvikter</div>
-        <div><strong>AMOUNT</strong> är för ingredienser som normalt kommer att doseras i antal (ex tre äggulor).</div>
+        <div class="measures"><strong>VOLUME</strong> är för ingredienser som normalt kommer att med något volymmått (ex mililiter). Som ris eller mjölk.</div>
+        <div class="measures"><strong>WEIGHT</strong> är för ingredienser som normalt kommer att doseras i gramvikter</div>
+        <div class="measures"><strong>AMOUNT</strong> är för ingredienser som normalt kommer att doseras i antal (ex tre äggulor).</div>
         <b-form inline>
-            <label class="mr-sm-2" for="inline-form-custom-select-pref">Choose unit</label>
             <b-form-select
             class="mb-2 mr-sm-2 mb-sm-0"
             :value="null"
@@ -18,7 +17,7 @@
             id="inline-form-custom-select-pref"
             >
             <template v-slot:first>
-                <option :value="null">Choose...</option>
+                <option :value="null">Välj enhet...</option>
             </template>
             </b-form-select>
             <b-button variant="primary" @click="onSave">Registrera</b-button>
@@ -57,5 +56,13 @@ export default {
 }
 </script>
 <style scoped>
+    .measures {
+        margin-bottom: 0.5rem;
+    }
+
+    .description {
+        margin-bottom: 1rem;
+        font-style: italic;
+    }
 
 </style>
