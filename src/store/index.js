@@ -24,6 +24,10 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    getAllRecipes({commit}) {
+      fetch('http://localhost:8080/recipe/all').then(response => response.json())
+        .then(result => commit('setAllRecipes', result))
+    }
   },
   modules: {
   }

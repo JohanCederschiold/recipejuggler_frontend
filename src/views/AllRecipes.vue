@@ -21,7 +21,7 @@ export default {
         return {
             modalShow: false,
             chosenRecipe: '',
-            allRecipes: []
+            //allRecipes: []
         }
     },
     components: {
