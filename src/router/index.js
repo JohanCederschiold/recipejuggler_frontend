@@ -5,6 +5,7 @@ import AllRecipes from '../views/AllRecipes.vue'
 import List from '../views/List.vue'
 import Home from '../views/Home.vue'
 import Search from '../views/Search.vue'
+import Update from '../views/UpdateRecipe.vue'
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes = [
     path: '/search',
     name: 'search',
     component: Search
+  },
+  {
+    path: '/update',
+    name: 'update',
+    component: Update
   },
 ]
 
