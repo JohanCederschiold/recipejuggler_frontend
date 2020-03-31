@@ -30,6 +30,7 @@ export default {
         recipeComplete() {
             this.registeredRecipe = null
             this.currentRegistrationStep = 1
+            this.$store.dispatch('getAllRecipes')
         }
     },
     components: {

@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     mainEndpoint: 'http://localhost:8080',
     chosenDrinks: [],
-    allRecipes: null
+    allRecipes: null,
+    allIngredients: null
   },
   mutations: {
     addChosenDrinkId(state, recipe) {
@@ -21,12 +22,19 @@ export default new Vuex.Store({
     },
     setAllRecipes(state, allRecipes) {
       state.allRecipes = allRecipes
+    },
+    setAllIngredients(state, allIngredients) {
+      state.allIngredients = allIngredients
     }
   },
   actions: {
     getAllRecipes({commit}) {
       fetch('http://localhost:8080/recipe/all').then(response => response.json())
         .then(result => commit('setAllRecipes', result))
+    },
+    getAllIngredients({commit}) {
+      fetch('http://localhost:8080//ingredient/all').then(response => response.json())
+        .then(result => commit('setAllIngredients', result))
     }
   },
   modules: {

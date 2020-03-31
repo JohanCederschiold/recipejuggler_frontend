@@ -8,6 +8,7 @@ import Navigation from './components/Navigation.vue'
 export default {
   created() {
     this.$store.dispatch('getAllRecipes')
+    this.$store.dispatch('getAllIngredients')
   },
   components: {
     'app-navigation': Navigation

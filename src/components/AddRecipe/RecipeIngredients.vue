@@ -1,6 +1,7 @@
 <template>
     <div>
         <h1>Registrera ingredienser</h1>
+        {{ingredients}}
         <p>Registrera ingredienserna till receptet <strong>{{ currentRecipe.title }}</strong></p>
         <h2>Ingredienser till {{currentRecipe.title}}</h2>
         <p v-for="(recipeIngredient, index) in registeredRecipeIngredients" :key="recipeIngredient.name">
@@ -37,10 +38,10 @@ export default {
     data: function() {
         return {
             ingredients: [],
-            ingredientsJson: [],
+            //ingredientsJson: [],
             registeredRecipeIngredients: [],
             currentIngredientUnit : '',
-            localeGetEndpoint: '/ingredient/all',
+            //localeGetEndpoint: '/ingredient/all',
             localePostEndpoint: '/ingredient/add',
             localePostRecipeIngredientEndpoint: '/recipe-ingredient/add',
             localeDeleteRecipeIngredientEndpoint: '/recipe-ingredient/delete/',
@@ -53,9 +54,14 @@ export default {
         }
     },
     computed: {
+        /*
         renderedGetEndpoint: function() {
             return this.$store.state.mainEndpoint + this.localeGetEndpoint
         },
+        
+       ingredients: function () {
+           return this.$store.state.allIngredients.map(item => item.name)
+       },*/
         renderedPostEndpoint: function() {
             return this.$store.state.mainEndpoint + this.localePostEndpoint
         },
@@ -70,6 +76,7 @@ export default {
         }
     },
     methods: {
+        /*
         fetchIngredients(){
             fetch(this.renderedGetEndpoint).then( response => {
                 return response.json()
@@ -80,6 +87,12 @@ export default {
                 }
             })
         },
+        */
+       filterIngredientNames() {
+           for(let i = 0 ; i < this.$store.state.allIngredients.length ; i++ ) {
+               this.ingredients.push(this.$store.state.allIngredients[i].name)
+           } 
+       },
         removeRecipeIngredient(ingredientId, index) {
             this.registeredRecipeIngredients.splice(index, 1)
             this.deleteRecipeIngredient(ingredientId)
@@ -93,9 +106,9 @@ export default {
             })
         },
         getUnit() {
-            for (let i = 0 ; i < this.ingredientsJson.length ; i++) {
-                if(this.ingredientsJson[i].name === this.ingredientName) {
-                    return this.ingredientsJson[i]
+            for (let i = 0 ; i < this.$store.state.allIngredients.length ; i++) {
+                if(this.$store.state.allIngredients[i].name === this.ingredientName) {
+                    return this.$store.state.allIngredients[i]
                 }
             }
             return null
@@ -213,7 +226,7 @@ export default {
         },
     },
     created: function() {
-        this.fetchIngredients()
+        this.filterIngredientNames()
     },
     components: {
         'app-volume': Volume,

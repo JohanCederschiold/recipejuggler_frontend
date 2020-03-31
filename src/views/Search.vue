@@ -3,7 +3,7 @@
         <h1>Sök recept</h1>
         <p class="presentation">Klicka på receptet för att se mer information.</p>
         <input class="input" v-model="searchString">
-        <b-button @click="Sök">
+        <b-button @click="search">
             Search
         </b-button>
         <div    v-for="recipe in foundRecipes" 

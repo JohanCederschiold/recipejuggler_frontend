@@ -8,7 +8,7 @@
             <div>Antal portioner: {{completeRecipe.noPortions}} personer</div>
             <h2>Ingredienser</h2>
             <ul>
-                <li v-for="ingredient in completeRecipe.ingredients" :key="ingredient.ingredientName">
+                <li v-for="ingredient in completeRecipe.ingredients" :key="ingredient.id">
                     {{getAmountsAsString(ingredient.amount, ingredient.units)}} {{ingredient.ingredientName}}
                 </li>
             </ul>
@@ -20,6 +20,7 @@
             </ol>
         <b-button class="mt-3" block @click="sendRecipeId(completeRecipe.recipeId, completeRecipe.title)">Add to list</b-button>
         <b-button class="mt-3" block @click="hideModal">Close Me</b-button>
+        <b-button class="mt-3" block @click="updateRecipe">Update</b-button>
         </b-modal>
     </div>
 </template>
@@ -34,6 +35,9 @@ export default {
     methods: {
         renderURL(localEndpoint, id) {
             return this.$store.state.mainEndpoint + localEndpoint + id
+        },
+        updateRecipe() {
+            this.$router.push({name : 'update', params: this.recipe} )
         },
         fetchCompleteRecipe() {
             fetch(this.renderURL(this.localEndpoint, this.recipe.id)).then(response => { return response.json()})
