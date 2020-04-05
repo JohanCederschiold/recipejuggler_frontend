@@ -1,9 +1,6 @@
 <template>
     <div v-if="recipeToUpdate !== null">
         <div>
-            This is update screen
-        </div>
-        <div>
             <div>Titel</div>
             <input type="text" v-model="title">
         </div>
@@ -23,13 +20,13 @@
             <Ingredients :ingredients="recipeToUpdate.ingredients" />
         </div>
         <div>
-            {{recipeToUpdate}}
-            {{$store.state.allIngredients}}
+            <AddIngredient :recipeId="recipeToUpdate.recipeId" v-on:addToIngredientList="addToIngredients"/>
         </div>
     </div>
 </template>
 <script>
 import Ingredients from '@/components/shared/ListIngredients.vue'
+import AddIngredient from '@/components/shared/AddIngredient.vue'
 export default {
     created() {
         this.getCompleteRecipe()
@@ -41,6 +38,10 @@ export default {
                     .then(response => {return response.json()})
                     .then(result => this.recipeToUpdate = result)
             }
+        },
+        addToIngredients(newIngredient) {
+            console.log(newIngredient)
+            this.recipeToUpdate.ingredients.push(newIngredient)
         }
     },
     data: function () {
@@ -54,7 +55,8 @@ export default {
         }
     },
     components: {
-        Ingredients
+        Ingredients,
+        AddIngredient
     }
 }
 </script>

@@ -28,7 +28,7 @@
 export default {
     data: function() {
         return {
-            options: {'1': 'VOLUME', '2': 'WEIGHT', '3':'AMOUNT'},
+            options: [{value: '1', text: 'VOLUME' }, {value: '2', text: 'WEIGHT'}, {value: '3', text:'AMOUNT'}],
             value: null
         }
     },

@@ -54,14 +54,6 @@ export default {
         }
     },
     computed: {
-        /*
-        renderedGetEndpoint: function() {
-            return this.$store.state.mainEndpoint + this.localeGetEndpoint
-        },
-        
-       ingredients: function () {
-           return this.$store.state.allIngredients.map(item => item.name)
-       },*/
         renderedPostEndpoint: function() {
             return this.$store.state.mainEndpoint + this.localePostEndpoint
         },
@@ -76,18 +68,6 @@ export default {
         }
     },
     methods: {
-        /*
-        fetchIngredients(){
-            fetch(this.renderedGetEndpoint).then( response => {
-                return response.json()
-            }).then( result => {
-                this.ingredientsJson = result
-                for (let i = 0; i < result.length ; i++ ) {
-                   this.ingredients.push(result[i].name)
-                }
-            })
-        },
-        */
        filterIngredientNames() {
            for(let i = 0 ; i < this.$store.state.allIngredients.length ; i++ ) {
                this.ingredients.push(this.$store.state.allIngredients[i].name)
@@ -200,7 +180,7 @@ export default {
                 return response.json()
             }).then(result => {
                 this.ingredientId = result.id
-                this.fetchIngredients()
+                this.$store.dispatch('getAllIngredients')
                 this.preventSubmit = false
             })
         },

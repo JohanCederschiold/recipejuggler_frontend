@@ -2,23 +2,11 @@
     <div>
         <h1>Ingredienser</h1>
         <div v-for="ingredient in ingredients" :key="ingredient.id">
-            <div v-if="changeUnitFor ===ingredient.id">
-                    <input type="text" placeholder="Hur mycket (ex 2)">
-                    <span class="inputingredient">
-                        <b-button @click="decreaseUnit">-</b-button>
-                        <input type="text" disabled :value="weights[unitNavigation].text">
-                        <b-button @click="increaseUnit">+</b-button>
-                    </span>
-                <b-button>Ändra</b-button>
-                <b-button @click="changeUnitFor = null">Ångra</b-button>
-            </div>
-            <div v-else>
+            <div>
+                <b-button @click="deleteIngredient(ingredient.id)">Ta bort</b-button>
                 {{getAmountsAsString(ingredient.amount, ingredient.units)}} av {{ingredient.ingredientName}}
             </div>
-            <b-button @click="changeUnitFor = ingredient.id">Ändra</b-button>
-            <b-button @click="deleteIngredient(ingredient.id)">Ta bort</b-button>
         </div>
-        <b-button>Lägg till</b-button>
     </div>
 </template>
 <script>
@@ -74,16 +62,6 @@ export default {
                     } 
                 })
         }
-
-/*
-        updateIngredient() {
-            axios.put(this.$store.state.mainEndpoint + this.localUpdateEndpoint, {
-                body : {
-
-                }
-            })
-        }*/
-
     },
     data: function () {
         return {
@@ -95,6 +73,9 @@ export default {
             localUpdateEndpoint: '/recipe-ingredient/update',
             localDeleteEndpoint: '/recipe-ingredient/delete/'
         }
+    },
+    components: {
+
     }
     
 }
