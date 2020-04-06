@@ -23,7 +23,7 @@
             </b-form-select>
 
 
-            <b-button variant="primary" @click="onSave">Save</b-button>
+            <b-button variant="primary" @click="onSave">Spara</b-button>
         </b-form>
     </div>
 </template>

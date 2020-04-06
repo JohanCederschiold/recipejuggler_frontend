@@ -8,6 +8,7 @@
         </span>
         <span>
             <b-button @click="sendAmount">Lägg till</b-button>
+            <b-button @click="reset">Ångra</b-button>
         </span>
     </div>
 </template>
@@ -38,6 +39,9 @@ export default {
         },
         sendAmount() {
             this.$emit('sendAmount', this.amount)
+        },
+        reset() {
+            this.$emit('reset')
         }
     }
     

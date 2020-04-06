@@ -10,14 +10,14 @@
             <b-form-datalist id="input-list" :options="ingredients"></b-form-datalist>
         </div>
         <div v-if="chosenIngredient.units !== undefined">
-            <InputWeightUnit v-if="chosenIngredient.units ==='WEIGHT'" v-on:sendAmount="register"/>
-            <InputVolumeUnit v-if="chosenIngredient.units ==='VOLUME'" v-on:sendAmount="register"/>
-            <InputAmountUnit v-if="chosenIngredient.units ==='AMOUNT'" v-on:sendAmount="register"/>
+            <InputWeightUnit v-if="chosenIngredient.units ==='WEIGHT'" v-on:sendAmount="register" v-on:reset="resetInputField"/>
+            <InputVolumeUnit v-if="chosenIngredient.units ==='VOLUME'" v-on:sendAmount="register" v-on:reset="resetInputField"/>
+            <InputAmountUnit v-if="chosenIngredient.units ==='AMOUNT'" v-on:sendAmount="register" v-on:reset="resetInputField"/>
         </div>
         <div>
             <b-button @click="onSubmit" :disabled="enterInputMode">Sök</b-button>
-        </div>
-        <b-modal hide-footer hide-header v-model="setNewIngredient">
+          </div>
+        <b-modal hide-footer hide-header v-model="setNewIngredient" >
             <RegisterNewIngredient v-on:unitChosen="setUnit"  />
         </b-modal>
     </div>
@@ -52,6 +52,10 @@ export default {
                 this.chosenIngredient = fetchedIngredient
             }
 
+        },
+        resetInputField() {
+           this.resetSearchIngredient()
+           this.enterInputMode = false
         },
         getChosenIngredient(ingredient) {
             return this.$store.state.allIngredients.filter(item => item.name.toLowerCase() === ingredient.toLowerCase())
