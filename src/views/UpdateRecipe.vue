@@ -22,11 +22,16 @@
         <div>
             <AddIngredient :recipeId="recipeToUpdate.recipeId" v-on:addToIngredientList="addToIngredients"/>
         </div>
+        <div>
+            <UpdateSteps :steps="recipeToUpdate.steps" />
+        </div>
+        
     </div>
 </template>
 <script>
 import Ingredients from '@/components/shared/ListIngredients.vue'
 import AddIngredient from '@/components/shared/AddIngredient.vue'
+import UpdateSteps from '@/components/shared/UpdateSteps.vue'
 export default {
     created() {
         this.getCompleteRecipe()
@@ -56,7 +61,8 @@ export default {
     },
     components: {
         Ingredients,
-        AddIngredient
+        AddIngredient,
+        UpdateSteps
     }
 }
 </script>
