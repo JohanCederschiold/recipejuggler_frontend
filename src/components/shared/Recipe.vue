@@ -14,7 +14,7 @@
             </ul>
             <h2>Steg</h2>
             <ol>
-                <li v-for="step in completeRecipe.steps" :key="step.id">
+                <li v-for="step in sortedSteps" :key="step.id">
                     {{step.instruction}}
                 </li>
             </ol>
@@ -78,6 +78,15 @@ export default {
                     }
             }
 
+        },
+        compare(a, b) { //used by the sort methods
+                if (a.sequence > b.sequence ) {
+                    return 1
+                } else if (a.sequence < b.sequence ) {
+                    return -1
+                } else {
+                    return 0
+                }
         }
 
     },
@@ -85,6 +94,12 @@ export default {
     created() {
         this.fetchCompleteRecipe()
     }, 
+    computed: {
+        sortedSteps() {
+            let sortThisArray = JSON.parse(JSON.stringify(this.completeRecipe.steps))
+            return sortThisArray.sort(this.compare)
+        }
+    },
     watch: {
         recipe: function () {
             this.fetchCompleteRecipe()

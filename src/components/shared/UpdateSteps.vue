@@ -4,7 +4,7 @@
             Receptsteg
         </div>
         <div v-if="!updateMode">
-            <div v-for="step in steps" :key="step.id">{{step.sequence}}: {{step.instruction}}</div>
+            <div v-for="step in sortedSteps" :key="step.id">{{step.sequence}}: {{step.instruction}}</div>
             <b-button @click="startUpdate">Ändra</b-button> 
         </div>
         <div v-else>
@@ -40,7 +40,7 @@ export default {
         startUpdate() {
             this.updateMode = true
             this.recipeId = this.steps[0].recipeid
-            this.newSteps = JSON.parse(JSON.stringify(this.steps))
+            this.newSteps = JSON.parse(JSON.stringify(this.steps)).sort(this.compare)
         },
         stopUpdating() {
             this.updateMode = false
@@ -59,6 +59,21 @@ export default {
             this.newSteps.splice(index, 1)
             this.newSteps.splice(index + 1, 0, instructionToMove)
         },
+        compare(a, b) { //used by the sort methods
+                if (a.sequence > b.sequence ) {
+                    return 1
+                } else if (a.sequence < b.sequence ) {
+                    return -1
+                } else {
+                    return 0
+                }
+        }
+    },
+    computed: {
+        sortedSteps() {
+            let sortThisArray = JSON.parse(JSON.stringify(this.steps))
+            return sortThisArray.sort(this.compare)
+        }
     }
 }
 </script>
