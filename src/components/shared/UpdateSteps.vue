@@ -4,16 +4,15 @@
             Receptsteg
         </div>
         <div v-if="!updateMode">
-            <div v-for="step in sortedSteps" :key="step.id">{{step.sequence}}: {{step.instruction}}</div>
+            <div v-for="step in recipeStepsInOrder" :key="step.id">{{step.sequence}}: {{step.instruction}}</div>
             <b-button @click="startUpdate">Ändra</b-button> 
         </div>
         <div v-else>
-            {{newSteps}}
-            <div v-for="(step, index) in newSteps" :key="step.id">
+            <div v-for="(step, index) in recipeStepsInOrder" :key="step.id">
                 <b-button   @click="moveUp(index)"
                             v-if="index !== 0">Upp</b-button>
                 <b-button   @click="moveDown(index)"
-                            v-if="index !== newSteps.length - 1">Ner</b-button>
+                            v-if="index !== recipeStepsInOrder.length - 1">Ner</b-button>
                 <b-button   @click="deleteStep(index)">Radera</b-button>
                 {{index + 1}}: {{step.instruction}}
             </div>
@@ -23,7 +22,6 @@
                 <b-button @click="stopUpdating">Klar</b-button>
             </div>
         </div>
-        {{recipeId}}
     </div>
 </template>
 <script>
@@ -34,7 +32,7 @@ export default {
     data: function () {
         return {
             updateMode: false,
-            newSteps: [],
+            recipeStepsInOrder: [],
             newStep: '',
             recipeId : null
         }
@@ -43,15 +41,14 @@ export default {
         startUpdate() {
             this.updateMode = true
             this.recipeId = this.steps[0].recipeid
-            this.newSteps = JSON.parse(JSON.stringify(this.steps)).sort(this.compare)
         },
         stopUpdating() {
-            for (let i = 0 ; i < this.newSteps.length ; i++) {
-                this.newSteps[i].sequence = i + 1
+            for (let i = 0 ; i < this.recipeStepsInOrder.length ; i++) {
+                this.recipeStepsInOrder[i].sequence = i + 1
             }
             const message = {
                 recipeId: this.recipeId,
-                steps: this.newSteps
+                steps: this.recipeStepsInOrder
             }
             axios.put(Endpoints.MAIN + Endpoints.STEPS_UPDATE, message)
                 .then(res => {
@@ -62,25 +59,25 @@ export default {
 
         },
         addStep() {
-            this.newSteps.push({
+            this.recipeStepsInOrder.push({
                 instruction: this.newStep,
-                sequence: this.newSteps.length + 1,
+                sequence: this.recipeStepsInOrder.length + 1,
                 recipeid: this.recipeId
                 })
             this.newStep = ''
         },
         moveUp(index) {
-            let instructionToMove = this.newSteps[index]
-            this.newSteps.splice(index, 1)
-            this.newSteps.splice(index -1, 0, instructionToMove)   
+            let instructionToMove = this.recipeStepsInOrder[index]
+            this.recipeStepsInOrder.splice(index, 1)
+            this.recipeStepsInOrder.splice(index -1, 0, instructionToMove)   
         }, 
         moveDown(index){
-            let instructionToMove = this.newSteps[index]
-            this.newSteps.splice(index, 1)
-            this.newSteps.splice(index + 1, 0, instructionToMove)
+            let instructionToMove = this.recipeStepsInOrder[index]
+            this.recipeStepsInOrder.splice(index, 1)
+            this.recipeStepsInOrder.splice(index + 1, 0, instructionToMove)
         },
         deleteStep(index) {
-            this.newSteps.splice(index, 1)
+            this.recipeStepsInOrder.splice(index, 1)
         },
         compare(a, b) { //used by the sort methods
                 if (a.sequence > b.sequence ) {
@@ -90,13 +87,10 @@ export default {
                 } else {
                     return 0
                 }
-        }
+        },
     },
-    computed: {
-        sortedSteps() {
-            let sortThisArray = JSON.parse(JSON.stringify(this.steps))
-            return sortThisArray.sort(this.compare)
-        }
+    created() {
+            this.recipeStepsInOrder = JSON.parse(JSON.stringify(this.steps)).sort(this.compare)
     }
 }
 </script>
