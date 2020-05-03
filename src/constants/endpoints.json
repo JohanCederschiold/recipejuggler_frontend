@@ -1,0 +1,4 @@
+    {
+        "MAIN": "http://localhost:8080",
+        "STEPS_UPDATE": "/steps/update"
+    }

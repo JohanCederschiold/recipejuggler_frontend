@@ -1,5 +1,5 @@
 <template>
-    <div v-if="recipeToUpdate !== null">
+    <div v-if="recipeToUpdate !== null" class="content">
         <div>
             <div>Titel</div>
             <input type="text" v-model="title">
@@ -67,5 +67,7 @@ export default {
 }
 </script>
 <style scoped>
-
+    .content {
+        margin: 3rem;
+    }
 </style>
