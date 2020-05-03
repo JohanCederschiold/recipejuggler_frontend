@@ -25,11 +25,13 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
     data: function () {
         return {
             localEndpoint: '/recipe-ingredient/get/complete/id/',
-            completeRecipe: {}
+            completeRecipe: {},
+            sortedSteps: []
         }
     },
     methods: {
@@ -40,8 +42,11 @@ export default {
             this.$router.push({name : 'update', params: this.recipe} )
         },
         fetchCompleteRecipe() {
-            fetch(this.renderURL(this.localEndpoint, this.recipe.id)).then(response => { return response.json()})
-                            .then(result => {this.completeRecipe = result})
+            axios.get(this.renderURL(this.localEndpoint, this.recipe.id))
+                            .then(response => {
+                                this.completeRecipe = response.data
+                                this.sortedSteps = JSON.parse(JSON.stringify(response.data.steps))
+                            })
         },
         hideModal(){
             this.$emit('closeModal')
@@ -94,12 +99,7 @@ export default {
     created() {
         this.fetchCompleteRecipe()
     }, 
-    computed: {
-        sortedSteps() {
-            let sortThisArray = JSON.parse(JSON.stringify(this.completeRecipe.steps))
-            return sortThisArray.sort(this.compare)
-        }
-    },
+
     watch: {
         recipe: function () {
             this.fetchCompleteRecipe()
