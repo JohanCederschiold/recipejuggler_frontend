@@ -15,9 +15,6 @@
                                 :currentRecipe="recipeToUpdate"
                                 class="ingredientBlock" />
             </div>
-            <div class="ingredientBlock">
-                <AddIngredient :recipeId="recipeToUpdate.recipeId" v-on:addToIngredientList="addToIngredients"/>
-            </div>
         </div>
         <div v-if="updateStep === 3">
             <div>Kontrollera receptets instruktioner och gå vidare.</div>
@@ -41,7 +38,6 @@
 <script>
 import Details from '@/components/UpdateRecipe/RecipeDetails.vue'
 import Ingredients from '@/components/UpdateRecipe/ListIngredients.vue'
-import AddIngredient from '@/components/UpdateRecipe/AddIngredient.vue'
 import UpdateSteps from '@/components/UpdateRecipe/UpdateSteps.vue'
 export default {
     created() {
@@ -55,10 +51,11 @@ export default {
                     .then(result => this.recipeToUpdate = result)
             }
         },
+        /*
         addToIngredients(newIngredient) {
             console.log(newIngredient)
             this.recipeToUpdate.ingredients.push(newIngredient)
-        },
+        },*/
         moveForward() {
             if (this.updateStep !== this.numberOfUpdateSteps) {
                 this.updateStep++
@@ -84,7 +81,6 @@ export default {
     },
     components: {
         Ingredients,
-        AddIngredient,
         UpdateSteps,
         Details
     }

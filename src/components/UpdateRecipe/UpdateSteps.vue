@@ -1,5 +1,6 @@
 <template>
     <div>
+        {{recipeStepsInOrder}}
         <div v-if="!updateMode">
             <div v-for="step in recipeStepsInOrder" :key="step.id">{{step.sequence}}: {{step.instruction}}</div>
             <b-button @click="startUpdate" variant="success">Ändra</b-button> 
@@ -60,18 +61,30 @@ export default {
         }
     },
     methods: {
+        updateSequence() {
+            this.recipeStepsInOrder.sort(this.compare)
+            for (let i = 0 ; i < this.recipeStepsInOrder.length ; i++) {
+                this.recipeStepsInOrder[i].sequence = i + 1
+            } 
+        },
+        setNewSequence() {
+            for (let i = 0 ; i < this.recipeStepsInOrder.length ; i++) {
+                this.recipeStepsInOrder[i].sequence = i + 1
+            } 
+        },
         startUpdate() {
             this.updateMode = true
             this.recipeId = this.steps[0].recipeid
         },
         stopUpdating() {
-            for (let i = 0 ; i < this.recipeStepsInOrder.length ; i++) {
-                this.recipeStepsInOrder[i].sequence = i + 1
-            }
+
+            console.log('My steps ', this.recipeStepsInOrder)
+
             const message = {
                 recipeId: this.recipeId,
                 steps: this.recipeStepsInOrder
             }
+            console.log('Sending ', message.steps)
             axios.put(Endpoints.MAIN + Endpoints.STEPS_UPDATE, message)
                 .then(res => {
                     if (res.status === 202) {
@@ -81,28 +94,34 @@ export default {
 
         },
         addStep() {
-            this.recipeStepsInOrder.push({
+            this.updateSequence()
+            this.recipeStepsInOrder.push(
+                {
                 instruction: this.newStep,
                 sequence: this.recipeStepsInOrder.length + 1,
                 recipeid: this.recipeId
-                })
+                }
+                )
             this.newStep = ''
         },
         moveUp(index) {
             let instructionToMove = this.recipeStepsInOrder[index]
             this.recipeStepsInOrder.splice(index, 1)
-            this.recipeStepsInOrder.splice(index -1, 0, instructionToMove)   
+            this.recipeStepsInOrder.splice(index -1, 0, instructionToMove)  
+            this.setNewSequence() 
         }, 
         moveDown(index){
             let instructionToMove = this.recipeStepsInOrder[index]
             this.recipeStepsInOrder.splice(index, 1)
             this.recipeStepsInOrder.splice(index + 1, 0, instructionToMove)
+            this.setNewSequence()
         },
         moveBackward() {
             this.$emit('moveBack')
         },
         deleteStep(index) {
             this.recipeStepsInOrder.splice(index, 1)
+            this.setNewSequence()
         },
         compare(a, b) { //used by the sort methods
                 if (a.sequence > b.sequence ) {

@@ -7,11 +7,35 @@
                 {{getAmountsAsString(ingredient.amount, ingredient.units)}} av {{ingredient.ingredientName}}
             </div>
         </div>
+            <div>
+                <div class="input">
+                    <label for="input-with-list">Lägg till ingrediens</label>
+                    <b-form-input   list="input-list" 
+                                    id="input-with-list" 
+                                    :disabled="enterInputMode"
+                                    v-model="ingredientName" 
+                                    placeholder="Write ingredient"></b-form-input>
+                    <b-form-datalist id="input-list" :options="ingredients"></b-form-datalist>
+                    <b-button @click="onSubmit" variant="success" :disabled="enterInputMode">Sök</b-button>
+                </div>
+                <div v-if="chosenIngredient.units !== undefined">
+                    <InputWeightUnit v-if="chosenIngredient.units ==='WEIGHT'" v-on:sendAmount="register" v-on:reset="resetInputField"/>
+                    <InputVolumeUnit v-if="chosenIngredient.units ==='VOLUME'" v-on:sendAmount="register" v-on:reset="resetInputField"/>
+                    <InputAmountUnit v-if="chosenIngredient.units ==='AMOUNT'" v-on:sendAmount="register" v-on:reset="resetInputField"/>
+                </div>
+                <b-modal hide-footer hide-header v-model="setNewIngredient" >
+                    <RegisterNewIngredient v-on:unitChosen="setUnit"  />
+                </b-modal>
+            </div>
     </div>
 </template>
 <script>
 import axios from 'axios'
 import ENDPOINTS from '@/constants/endpoints.json'
+import InputWeightUnit from '@/components/shared/InputWeightUnit'
+import InputVolumeUnit from '@/components/shared/InputVolume'
+import InputAmountUnit from '@/components/shared/InputAmount'
+import RegisterNewIngredient from '@/components/AddRecipe/RegisterUnit'
 export default {
     props: ['currentRecipe'],
     created() {
@@ -61,10 +85,6 @@ export default {
             axios.delete(this.$store.state.mainEndpoint + this.localDeleteEndpoint + id)
                 .then(result => {
                     if(result.status === 202){
-                        /*
-                        const filteredArray = this.ingredients.filter(item => item.id !== id)
-                        this.updatedIngredients = filteredArray
-                        */
                        this.getRecipe()
                     } 
             })
@@ -72,6 +92,64 @@ export default {
         getRecipe() {
             axios.get(ENDPOINTS.MAIN + ENDPOINTS.GET_RECIPE + this.currentRecipe.recipeId)
                 .then(res => this.updatedIngredients = res.data.ingredients)
+        },
+        onSubmit() {
+            this.enterInputMode = true
+            const fetchedIngredient = this.getChosenIngredient(this.ingredientName)[0]
+            
+            if (fetchedIngredient === undefined) {
+                this.chosenIngredient = ''
+                this.setNewIngredient = true
+            } else {
+                this.setNewIngredient = false
+                this.chosenIngredient = fetchedIngredient
+            }
+        },
+        resetInputField() {
+           this.resetSearchIngredient()
+           this.enterInputMode = false
+        },
+        getChosenIngredient(ingredient) {
+            return this.$store.state.allIngredients.filter(item => item.name.toLowerCase() === ingredient.toLowerCase())
+        },
+        register(amount) {
+            this.amount = amount
+            this.enterInputMode = false
+            this.registerNewRecipeIngredient()
+        },
+        resetSearchIngredient() {
+            this.chosenIngredient = ''
+            this.ingredientName = ''
+        },
+        setUnit(newUnit) {
+            this.registerNewIngredient(newUnit)
+            this.setNewIngredient = false
+        },
+        registerNewIngredient(newUnit) {
+            const message =   {
+                    name: this.ingredientName,
+                    unit: newUnit
+                }
+            
+            axios.post(this.$store.state.mainEndpoint + '/ingredient/add', message)
+                .then(result => this.chosenIngredient = result.data)
+        },
+        registerNewRecipeIngredient() {
+            const message =  {
+                    ingredientId: this.chosenIngredient.id,
+                    recipeId: this.currentRecipe.recipeId,
+                    amount: this.amount
+                }
+            axios.post(this.$store.state.mainEndpoint + '/recipe-ingredient/add', message)
+                .then(result => {
+                    if(result.status === 201) {
+                        this.resetSearchIngredient()
+                        this.getRecipe()
+                    }
+            })
+        },
+        addIngredientToIngredientList() {
+            this.$emit('addToIngredientList', this.chosenIngredient)
         }
     },
     data: function () {
@@ -82,9 +160,25 @@ export default {
             unitNavigation: 0,
             weights: [{value: 1, text: "gr"}, {value: 100, text: "hg"}, {value: 1000, text: "kg"} ],
             localUpdateEndpoint: '/recipe-ingredient/update',
-            localDeleteEndpoint: '/recipe-ingredient/delete/'
+            localDeleteEndpoint: '/recipe-ingredient/delete/',
+            amount: 0,
+            ingredientName: '',
+            enterInputMode: false,
+            chosenIngredient: '',
+            setNewIngredient: false,
         }
-    },    
+    },  
+    computed: {
+        ingredients() {
+            return this.$store.state.allIngredients.map(item => item.name)
+        }
+    },
+    components: {
+        InputWeightUnit,
+        InputVolumeUnit,
+        InputAmountUnit,
+        RegisterNewIngredient
+    }  
 }
 </script>
 <style scoped>

@@ -45,7 +45,7 @@ export default {
             axios.get(this.renderURL(this.localEndpoint, this.recipe.id))
                             .then(response => {
                                 this.completeRecipe = response.data
-                                this.sortedSteps = JSON.parse(JSON.stringify(response.data.steps))
+                                this.sortedSteps = JSON.parse(JSON.stringify(response.data.steps)).sort(this.compare)
                             })
         },
         hideModal(){
