@@ -1,26 +1,48 @@
 <template>
     <div>
-        <div>
-            Receptsteg
-        </div>
         <div v-if="!updateMode">
             <div v-for="step in recipeStepsInOrder" :key="step.id">{{step.sequence}}: {{step.instruction}}</div>
-            <b-button @click="startUpdate">Ändra</b-button> 
+            <b-button @click="startUpdate" variant="success">Ändra</b-button> 
         </div>
         <div v-else>
             <div v-for="(step, index) in recipeStepsInOrder" :key="step.id">
                 <b-button   @click="moveUp(index)"
-                            v-if="index !== 0">Upp</b-button>
+                            class="controlButtons"
+                            v-if="index !== 0"
+                            variant="primary"
+                            >
+                            Upp
+                </b-button>
+                <b-button   v-else
+                            class="controlButtons"
+                            variant="primary"
+                            disabled>
+                            Upp
+                </b-button>
                 <b-button   @click="moveDown(index)"
+                            class="controlButtons"
+                            variant="info"
                             v-if="index !== recipeStepsInOrder.length - 1">Ner</b-button>
-                <b-button   @click="deleteStep(index)">Radera</b-button>
-                {{index + 1}}: {{step.instruction}}
+                <b-button   v-else
+                            class="controlButtons"
+                            variant="info"
+                            disabled>
+                            Ner
+                </b-button>
+                <b-button   @click="deleteStep(index)" variant="danger">X</b-button>
+                <span class="text">
+                    {{index + 1}}: {{step.instruction}}
+                </span>
             </div>
             <input type="text" v-model="newStep" placeholder="Skriv in nytt steg">
-            <b-button @click="addStep">Lägg till</b-button>
-            <div>
-                <b-button @click="stopUpdating">Klar</b-button>
-            </div>
+            <b-button @click="addStep" variant="success">Lägg till</b-button>
+        </div>
+        <div class="navigationButtons">
+            <b-button   @click="moveBackward" 
+                        variant="danger">
+                            Bakåt
+            </b-button>
+            <b-button @click="stopUpdating" variant="primary">Spara och avsluta</b-button>
         </div>
     </div>
 </template>
@@ -53,7 +75,7 @@ export default {
             axios.put(Endpoints.MAIN + Endpoints.STEPS_UPDATE, message)
                 .then(res => {
                     if (res.status === 202) {
-                        this.updateMode = false
+                        this.$router.replace('allrecipes')
                     }
                 })
 
@@ -76,6 +98,9 @@ export default {
             this.recipeStepsInOrder.splice(index, 1)
             this.recipeStepsInOrder.splice(index + 1, 0, instructionToMove)
         },
+        moveBackward() {
+            this.$emit('moveBack')
+        },
         deleteStep(index) {
             this.recipeStepsInOrder.splice(index, 1)
         },
@@ -95,5 +120,19 @@ export default {
 }
 </script>
 <style scoped>
+
+.text {
+    margin-left: 1rem;
+}
+
+.controlButtons {
+    margin-right: 0.2rem;
+}
+
+.navigationButtons {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
 
 </style>

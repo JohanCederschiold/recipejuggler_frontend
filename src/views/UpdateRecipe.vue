@@ -1,37 +1,47 @@
 <template>
     <div v-if="recipeToUpdate !== null" class="content">
-        <div>
-            <div>Titel</div>
-            <input type="text" v-model="title">
+        <h1>Uppdatera recept</h1>
+        <div v-if="updateStep === 1">
+            <div>Kontrollera receptets detaljer och gå vidare.</div>
+            <Details    :originalTitle="title" 
+                        :originalInstructions="instructions"
+                        :originalPreptime ="preptime"
+                        :originalPortions ="portions"/>
         </div>
-        <div>
-            <div>Beskrivning</div>
-            <input type="text" v-model="instructions">
+        <div v-if="updateStep === 2">
+            <div>
+                <div>Kontrollera receptets ingredienser och gå vidare.</div>
+                <Ingredients    :ingredients="recipeToUpdate.ingredients"
+                                class="ingredientBlock" />
+            </div>
+            <div class="ingredientBlock">
+                <AddIngredient :recipeId="recipeToUpdate.recipeId" v-on:addToIngredientList="addToIngredients"/>
+            </div>
         </div>
-        <div>
-            <div>Tillagningstid</div>
-            <input type="text" v-model="preptime">
+        <div v-if="updateStep === 3">
+            <div>Kontrollera receptets instruktioner och gå vidare.</div>
+            <UpdateSteps    :steps="recipeToUpdate.steps"
+                            @moveBack="moveBackward"/>
         </div>
-        <div>
-            <div>Antal portioner</div>
-            <input type="text" v-model="portions">
+        <div class="navigationButtons">
+            <b-button   @click="moveBackward" 
+                        v-if="updateStep === 2"
+                        variant="danger">
+                            Bakåt
+            </b-button>
+            <b-button   @click="moveForward"
+                        v-if="updateStep !==3"
+                        variant="primary">
+                            Gå vidare
+            </b-button>
         </div>
-        <div>
-            <Ingredients :ingredients="recipeToUpdate.ingredients" />
-        </div>
-        <div>
-            <AddIngredient :recipeId="recipeToUpdate.recipeId" v-on:addToIngredientList="addToIngredients"/>
-        </div>
-        <div>
-            <UpdateSteps :steps="recipeToUpdate.steps" />
-        </div>
-        
     </div>
 </template>
 <script>
-import Ingredients from '@/components/shared/ListIngredients.vue'
-import AddIngredient from '@/components/shared/AddIngredient.vue'
-import UpdateSteps from '@/components/shared/UpdateSteps.vue'
+import Details from '@/components/UpdateRecipe/RecipeDetails.vue'
+import Ingredients from '@/components/UpdateRecipe/ListIngredients.vue'
+import AddIngredient from '@/components/UpdateRecipe/AddIngredient.vue'
+import UpdateSteps from '@/components/UpdateRecipe/UpdateSteps.vue'
 export default {
     created() {
         this.getCompleteRecipe()
@@ -47,6 +57,16 @@ export default {
         addToIngredients(newIngredient) {
             console.log(newIngredient)
             this.recipeToUpdate.ingredients.push(newIngredient)
+        },
+        moveForward() {
+            if (this.updateStep !== this.numberOfUpdateSteps) {
+                this.updateStep++
+            } 
+        },
+        moveBackward() {
+            if (this.updateStep !== 1 ) {
+                this.updateStep--
+            }
         }
     },
     data: function () {
@@ -56,18 +76,30 @@ export default {
             title: this.$route.params.title,
             instructions: this.$route.params.instructions,
             preptime: this.$route.params.preparationTimeMinutes,
-            portions: this.$route.params.noPortions
+            portions: this.$route.params.noPortions,
+            updateStep: 1,
+            numberOfUpdateSteps: 3
         }
     },
     components: {
         Ingredients,
         AddIngredient,
-        UpdateSteps
+        UpdateSteps,
+        Details
     }
 }
 </script>
 <style scoped>
     .content {
         margin: 3rem;
+    }
+
+    .navigationButtons {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .ingredientBlock {
+        margin-top: 1rem;
     }
 </style>

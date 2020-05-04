@@ -7,8 +7,8 @@
             <b-button @click="increaseUnit">+</b-button>
         </span>
         <span>
-            <b-button @click="sendAmount">Lägg till</b-button>
-            <b-button @click="reset">Ångra</b-button>
+            <b-button @click="sendAmount" variant="success">Lägg till</b-button>
+            <b-button @click="reset" variant="danger">Ångra</b-button>
         </span>
     </div>
 </template>
@@ -44,7 +44,7 @@ export default {
             }
         },
         sendAmount() {
-            this.$emit('sendAmount', this.amount)
+            this.$emit('sendAmount', this.amount * this.volumes[this.unitNavigation].value)
         },
         reset() {
             this.$emit('reset')

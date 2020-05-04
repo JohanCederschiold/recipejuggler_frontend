@@ -1,9 +1,9 @@
 <template>
     <div>
-        <h1>Ingredienser</h1>
+        <h3>Ingredienser</h3>
         <div v-for="ingredient in ingredients" :key="ingredient.id">
             <div>
-                <b-button @click="deleteIngredient(ingredient.id)">Ta bort</b-button>
+                <b-button pill @click="deleteIngredient(ingredient.id)" variant="danger">x</b-button>
                 {{getAmountsAsString(ingredient.amount, ingredient.units)}} av {{ingredient.ingredientName}}
             </div>
         </div>
