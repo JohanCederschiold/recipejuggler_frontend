@@ -12,6 +12,7 @@
             <div>
                 <div>Kontrollera receptets ingredienser och gå vidare.</div>
                 <Ingredients    :ingredients="recipeToUpdate.ingredients"
+                                :currentRecipe="recipeToUpdate"
                                 class="ingredientBlock" />
             </div>
             <div class="ingredientBlock">

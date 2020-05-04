@@ -1,4 +1,5 @@
     {
         "MAIN": "http://localhost:8080",
-        "STEPS_UPDATE": "/steps/update"
+        "STEPS_UPDATE": "/steps/update",
+        "GET_RECIPE": "/recipe-ingredient/get/complete/id/"
     }

@@ -1,7 +1,7 @@
 <template>
     <div>
         <h3>Ingredienser</h3>
-        <div v-for="ingredient in ingredients" :key="ingredient.id">
+        <div v-for="ingredient in updatedIngredients" :key="ingredient.id">
             <div>
                 <b-button pill @click="deleteIngredient(ingredient.id)" variant="danger">x</b-button>
                 {{getAmountsAsString(ingredient.amount, ingredient.units)}} av {{ingredient.ingredientName}}
@@ -11,8 +11,12 @@
 </template>
 <script>
 import axios from 'axios'
+import ENDPOINTS from '@/constants/endpoints.json'
 export default {
-    props: ['ingredients'],
+    props: ['currentRecipe'],
+    created() {
+        this.getRecipe()
+    },
     methods: {
         getAmountsAsString(amount, unit) {
             switch (unit) {
@@ -57,27 +61,30 @@ export default {
             axios.delete(this.$store.state.mainEndpoint + this.localDeleteEndpoint + id)
                 .then(result => {
                     if(result.status === 202){
+                        /*
                         const filteredArray = this.ingredients.filter(item => item.id !== id)
-                        this.ingredients = filteredArray
+                        this.updatedIngredients = filteredArray
+                        */
+                       this.getRecipe()
                     } 
-                })
+            })
+        },
+        getRecipe() {
+            axios.get(ENDPOINTS.MAIN + ENDPOINTS.GET_RECIPE + this.currentRecipe.recipeId)
+                .then(res => this.updatedIngredients = res.data.ingredients)
         }
     },
     data: function () {
         return {
             changeUnitFor: null,
+            updatedIngredients: [],
             value: 0,
-
             unitNavigation: 0,
             weights: [{value: 1, text: "gr"}, {value: 100, text: "hg"}, {value: 1000, text: "kg"} ],
             localUpdateEndpoint: '/recipe-ingredient/update',
             localDeleteEndpoint: '/recipe-ingredient/delete/'
         }
-    },
-    components: {
-
-    }
-    
+    },    
 }
 </script>
 <style scoped>
