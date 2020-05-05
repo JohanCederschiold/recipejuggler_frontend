@@ -1,5 +1,10 @@
     {
         "MAIN": "http://localhost:8080",
+        "ADD_RECIPE": "/recipe/add",
         "STEPS_UPDATE": "/steps/update",
-        "GET_RECIPE": "/recipe-ingredient/get/complete/id/"
+        "ADD_STEPS": "/steps/add",
+        "GET_RECIPE": "/recipe-ingredient/get/complete/id/",
+        "ADD_INGREDIENT": "/ingredient/add",
+        "ADD_RECIPE_INGREDIENT": "/recipe-ingredient/add",
+        "DELETE_RECIPE_INGREDIENT": "/recipe-ingredient/delete/"
     }

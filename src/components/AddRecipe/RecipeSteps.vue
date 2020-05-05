@@ -29,6 +29,8 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+import Endpoints from '@/constants/endpoints.json'
 export default {
     props: ['currentRecipe'],
     data: function() {
@@ -37,13 +39,7 @@ export default {
             currentlyChanginStep: null,
             changedInstruction: null,
             instruction: null,
-            localeEndpoint: '/steps/add',
             stepInstructions: [],
-        }
-    },
-    computed: {
-        renderedEndpoint: function() {
-            return this.$store.state.mainEndpoint + this.localeEndpoint
         }
     },
     methods: {
@@ -85,17 +81,13 @@ export default {
             }
         },
         registerRecipe() {
-            fetch(this.renderedEndpoint, {
-                body: this.createRecipeStepObject(),
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                method: 'POST'
-            }).then( response => {
-                if (response.status === 201) {
-                    this.closeAndReset()
-                }
-            })
+
+            axios.post(Endpoints.MAIN + Endpoints.ADD_STEPS, this.createRecipeStepObject())
+                .then(response => {
+                    if (response.status === 201) {
+                        this.closeAndReset()
+                    }
+                })
         },
         createRecipeStepObject() {
             let stepsToRegister = []
@@ -111,8 +103,8 @@ export default {
                 recipeId: this.currentRecipe.id,
                 steps: stepsToRegister
             }
-            let jsonSteps = JSON.stringify(wrapper)
-            return jsonSteps
+
+            return wrapper
         },
         closeAndReset() {
             this.$emit('closeAndReset')

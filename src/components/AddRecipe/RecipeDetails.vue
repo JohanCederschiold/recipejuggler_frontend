@@ -50,6 +50,8 @@
     </div>
 </template>
 <script>
+import Endpoints from '@/constants/endpoints.json'
+import axios from 'axios'
 export default {
     data: function() {
         return {
@@ -60,15 +62,9 @@ export default {
             description: null,
             namePlaceholderMessage: 'Namn på receptet',
             ownerPlaceholderMessage: 'Ditt namn',
-            localeEndpoint: '/recipe/add',
             minutesPlaceholderMessage: 'Antal minuter för tillagning',
             servingsPlaceholderMessage: 'Antal portioner',
             descriptionPlaceholderMessage: 'Kort beskrivning'
-        }
-    },
-    computed: {
-        renderedEndpoint: function() {
-            return this.$store.state.mainEndpoint + this.localeEndpoint
         }
     },
     methods: {
@@ -110,27 +106,20 @@ export default {
             }
         },
         registerRecipe() {
-            let postRequest = JSON.stringify(
+            let postRequest =
                 { 
                     title : this.recipeName , 
                     owner : this.recipeOwner, 
                     preparationTimeMinutes: this.minutesToPrepare,
                     noPortions: this.noServings,
                     instructions: this.description
-                })
+                }
 
-            fetch(this.renderedEndpoint, {
-                body: postRequest,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                method: 'POST'
-            }).then( response => {
-                return response.json()
-            }).then(result => {
-                this.onReset()
-                this.$emit('recipeRegistered', result)
-            })
+            axios.post(Endpoints.MAIN + Endpoints.ADD_RECIPE, postRequest)
+                .then(response => {
+                    this.onReset()
+                    this.$emit('recipeRegistered', response.data)
+                })
         }
     }   
 }

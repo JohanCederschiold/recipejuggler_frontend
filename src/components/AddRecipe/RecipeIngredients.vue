@@ -33,18 +33,15 @@ import Volume from './Volume.vue'
 import NewUnit from './RegisterUnit.vue'
 import Weight from './Weight.vue'
 import Amount from './Amount.vue'
+import axios from 'axios'
+import Endpoints from '@/constants/endpoints.json'
 export default {
     props: ['currentRecipe'],
     data: function() {
         return {
             ingredients: [],
-            //ingredientsJson: [],
             registeredRecipeIngredients: [],
             currentIngredientUnit : '',
-            //localeGetEndpoint: '/ingredient/all',
-            localePostEndpoint: '/ingredient/add',
-            localePostRecipeIngredientEndpoint: '/recipe-ingredient/add',
-            localeDeleteRecipeIngredientEndpoint: '/recipe-ingredient/delete/',
             notFinishedWithIngredients: true,
             ingredientName: null,
             amount: null,
@@ -54,15 +51,6 @@ export default {
         }
     },
     computed: {
-        renderedPostEndpoint: function() {
-            return this.$store.state.mainEndpoint + this.localePostEndpoint
-        },
-        renderedPostRecipeIngredientEndpoint: function() {
-            return this.$store.state.mainEndpoint + this.localePostRecipeIngredientEndpoint
-        },
-        renderedDeleteRecipeIngredientEndpoint: function() {
-            return this.$store.state.mainEndpoint + this.localeDeleteRecipeIngredientEndpoint
-        },
         show: function () {
             return this.currentIngredientUnit === null
         }
@@ -78,12 +66,7 @@ export default {
             this.deleteRecipeIngredient(ingredientId)
         },
         deleteRecipeIngredient(ingredientId) {
-            fetch(this.renderedDeleteRecipeIngredientEndpoint + ingredientId, {
-                method: 'DELETE',
-                headers: {
-                    'credentials': 'include'
-                }
-            })
+            axios.delete(Endpoints.MAIN + Endpoints.DELETE_RECIPE_INGREDIENT + ingredientId)
         },
         getUnit() {
             for (let i = 0 ; i < this.$store.state.allIngredients.length ; i++) {
@@ -164,45 +147,33 @@ export default {
             this.$emit('allIngredientsRegistered')
         },
         registerNewIngredient() {
-            let postRequest = JSON.stringify(
-                { 
+
+            let postRequest =    { 
                     name : this.ingredientName , 
                     unit : this.currentIngredientUnit 
-                })
+                }
 
-            fetch(this.renderedPostEndpoint, {
-                body: postRequest,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                method: 'POST'
-            }).then( response => {
-                return response.json()
-            }).then(result => {
-                this.ingredientId = result.id
-                this.$store.dispatch('getAllIngredients')
-                this.preventSubmit = false
-            })
+            axios.post(Endpoints.MAIN + Endpoints.ADD_INGREDIENT, postRequest)
+                .then(response => {
+                    this.ingredientId = response.data.id
+                    this.$store.dispatch('getAllIngredients')
+                    this.preventSubmit = false
+                })
         },
         registerNewRecipeIngredient() {
-            let postRequest = JSON.stringify(
+
+            let postRequest = 
                 { 
                     recipeId : this.currentRecipe.id , 
                     ingredientId : this.ingredientId, 
                     amount : this.amount 
+                }
+
+            axios.post(Endpoints.MAIN + Endpoints.ADD_RECIPE_INGREDIENT, postRequest)
+                .then(response => {
+                    this.pushToRegistered(response.data.id)
+                    this.onReset()
                 })
-            fetch(this.renderedPostRecipeIngredientEndpoint, {
-                body: postRequest,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                method: 'POST'
-            }).then( response => {
-                return response.json()
-            }).then( result => {
-                this.pushToRegistered(result.id)
-                this.onReset()
-            })
         },
     },
     created: function() {
