@@ -26,23 +26,25 @@
 </template>
 <script>
 import axios from 'axios'
+import Endpoints from '@/constants/endpoints.json'
 export default {
     data: function () {
         return {
-            localEndpoint: '/recipe-ingredient/get/complete/id/',
+            //localEndpoint: '/recipe-ingredient/get/complete/id/',
             completeRecipe: {},
             sortedSteps: []
         }
     },
     methods: {
+        /*
         renderURL(localEndpoint, id) {
             return this.$store.state.mainEndpoint + localEndpoint + id
-        },
+        },*/
         updateRecipe() {
             this.$router.push({name : 'update', params: this.recipe} )
         },
         fetchCompleteRecipe() {
-            axios.get(this.renderURL(this.localEndpoint, this.recipe.id))
+            axios.get(Endpoints.MAIN + Endpoints.GET_RECIPE + this.recipe.id)
                             .then(response => {
                                 this.completeRecipe = response.data
                                 this.sortedSteps = JSON.parse(JSON.stringify(response.data.steps)).sort(this.compare)
