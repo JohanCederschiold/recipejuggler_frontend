@@ -37,6 +37,8 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+import ENDPOINTS from '@/constants/endpoints.json'
 import Details from '@/components/UpdateRecipe/RecipeDetails.vue'
 import Ingredients from '@/components/UpdateRecipe/ListIngredients.vue'
 import UpdateSteps from '@/components/UpdateRecipe/UpdateSteps.vue'
@@ -47,9 +49,14 @@ export default {
     methods: {
         getCompleteRecipe() {
             if (this.$route.params.id !== undefined && this.$route.params.id !== undefined) {
+                axios.get(ENDPOINTS.MAIN + ENDPOINTS.GET_RECIPE + this.$route.params.id)
+                    .then(response => this.recipeToUpdate = response.data)
+
+
+/*
                 fetch(this.$store.state.mainEndpoint + this.getCompleteRecipeEndpoint + this.$route.params.id)
                     .then(response => {return response.json()})
-                    .then(result => this.recipeToUpdate = result)
+                    .then(result => this.recipeToUpdate = result)*/
             }
         },
         /*
@@ -70,7 +77,7 @@ export default {
     },
     data: function () {
         return {
-            getCompleteRecipeEndpoint: '/recipe-ingredient/get/complete/id/',
+            //getCompleteRecipeEndpoint: '/recipe-ingredient/get/complete/id/',
             recipeToUpdate: null,
             title: this.$route.params.title,
             instructions: this.$route.params.instructions,

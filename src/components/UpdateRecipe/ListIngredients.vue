@@ -82,8 +82,9 @@ export default {
             }
         },
         deleteIngredient(id) {
-            axios.delete(this.$store.state.mainEndpoint + this.localDeleteEndpoint + id)
+            axios.delete(ENDPOINTS.MAIN + ENDPOINTS.DELETE_RECIPE_INGREDIENT + id)
                 .then(result => {
+                    console.log(result)
                     if(result.status === 202){
                        this.getRecipe()
                     } 
@@ -131,7 +132,7 @@ export default {
                     unit: newUnit
                 }
             
-            axios.post(this.$store.state.mainEndpoint + '/ingredient/add', message)
+            axios.post(ENDPOINTS.MAIN + ENDPOINTS.ADD_INGREDIENT , message)
                 .then(result => this.chosenIngredient = result.data)
         },
         registerNewRecipeIngredient() {
@@ -140,7 +141,7 @@ export default {
                     recipeId: this.currentRecipe.recipeId,
                     amount: this.amount
                 }
-            axios.post(this.$store.state.mainEndpoint + '/recipe-ingredient/add', message)
+            axios.post(ENDPOINTS.MAIN + ENDPOINTS.ADD_RECIPE_INGREDIENT , message)
                 .then(result => {
                     if(result.status === 201) {
                         this.resetSearchIngredient()
@@ -159,8 +160,6 @@ export default {
             value: 0,
             unitNavigation: 0,
             weights: [{value: 1, text: "gr"}, {value: 100, text: "hg"}, {value: 1000, text: "kg"} ],
-            localUpdateEndpoint: '/recipe-ingredient/update',
-            localDeleteEndpoint: '/recipe-ingredient/delete/',
             amount: 0,
             ingredientName: '',
             enterInputMode: false,

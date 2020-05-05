@@ -11,20 +11,20 @@
                 @click="choose(recipe)">
             {{recipe.title}}
         </div>
-        <Recipe :recipe="chosenRecipe" :show="modalVisible" v-on:closeModal="closeModal"/>
+        <Recipe v-if="chosenRecipe" :recipe="chosenRecipe" :show="modalVisible" v-on:closeModal="closeModal"/>
     </div>
 </template>
 <script>
 import Recipe from '../components/shared/Recipe.vue'
+import axios from 'axios'
+import ENDPOINTS from '@/constants/endpoints.json'
 export default {
     data: function() {
         return {
             searchString : '',
-            chosenRecipe: '',
+            chosenRecipe: null,
             modalVisible: false,
             foundRecipes: [],
-            searchTitleEndpoint: '/recipe/find/searchstring/',
-            searchIngredientEndpoint: '/recipe/find/ingredient/'
         }
     },
     methods: {
@@ -44,14 +44,14 @@ export default {
             this.searchIngredient(this.searchString);
         },
         searchTitle(searchFor) {
-            fetch(this.$store.state.mainEndpoint + this.searchTitleEndpoint + searchFor)
-                .then(response => {return response.json()})
-                .then(result => result.map(item => this.foundRecipes.push(item)))
+
+            axios.get(ENDPOINTS.MAIN + ENDPOINTS.SEARCH_TITLE + searchFor)
+                .then(response => response.data.map(item => this.foundRecipes.push(item)))
         },
         searchIngredient(searchFor) {
-            fetch(this.$store.state.mainEndpoint + this.searchIngredientEndpoint + searchFor)
-                .then(response => {return response.json()})
-                .then(result => result.map(item => this.foundRecipes.push(item)))
+
+            axios.get(ENDPOINTS.MAIN + ENDPOINTS.SEARCH_INGREDIENT + searchFor)
+                .then(response => response.data.map(item => this.foundRecipes.push(item)))
         }
     },
     computed: {

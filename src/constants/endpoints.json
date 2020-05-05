@@ -1,10 +1,16 @@
     {
         "MAIN": "http://localhost:8080",
         "ADD_RECIPE": "/recipe/add",
+        "ALL_RECIPES": "/recipe/all",
+        "ALL_INGREDIENTS": "/ingredient/all",
         "STEPS_UPDATE": "/steps/update",
         "ADD_STEPS": "/steps/add",
         "GET_RECIPE": "/recipe-ingredient/get/complete/id/",
         "ADD_INGREDIENT": "/ingredient/add",
         "ADD_RECIPE_INGREDIENT": "/recipe-ingredient/add",
-        "DELETE_RECIPE_INGREDIENT": "/recipe-ingredient/delete/"
+        "DELETE_INGREDIENT": "/ingredient/delete/",
+        "DELETE_RECIPE_INGREDIENT": "/recipe-ingredient/delete/",
+        "RECIPE_INGREDIENTS_LIST": "/recipe-ingredient/post/listRecipeIngredients",
+        "SEARCH_TITLE" : "/recipe/find/searchstring/",
+        "SEARCH_INGREDIENT" : "/recipe/find/ingredient/"
     }

@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
+import ENDPOINTS from '@/constants/endpoints.json'
 
 Vue.use(Vuex)
 
@@ -29,12 +31,13 @@ export default new Vuex.Store({
   },
   actions: {
     getAllRecipes({commit}) {
-      fetch('http://localhost:8080/recipe/all').then(response => response.json())
-        .then(result => commit('setAllRecipes', result))
+      axios.get(ENDPOINTS.MAIN + ENDPOINTS.ALL_RECIPES)
+        .then(response => commit('setAllRecipes', response.data))
+      
     },
     getAllIngredients({commit}) {
-      fetch('http://localhost:8080//ingredient/all').then(response => response.json())
-        .then(result => commit('setAllIngredients', result))
+      axios.get(ENDPOINTS.MAIN + ENDPOINTS.ALL_INGREDIENTS)
+        .then(response => commit('setAllIngredients', response.data))
     }
   },
   modules: {

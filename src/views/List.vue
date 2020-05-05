@@ -24,13 +24,14 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+import ENDPOINTS from '@/constants/endpoints.json'
 export default {
     created: function () {
         this.fetchIngredientsForChosenRecipes()
     }, 
     data: function () {
         return {
-            localEndpoint: '/recipe-ingredient/post/listRecipeIngredients',
             recipeAndIngredients: [],
             accumulatedIngredients: [],
             noServings: 4
@@ -78,15 +79,8 @@ export default {
             }
         },
         fetchIngredientsForChosenRecipes() {
-            fetch(this.$store.state.mainEndpoint + this.localEndpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-type':'application/json'
-                }, 
-                body: JSON.stringify( {recipeIds:  this.chosenIds} )
-            })
-            .then(response => {return response.json()})
-            .then(result => this.recipeAndIngredients = result)
+            axios.post(ENDPOINTS.MAIN + ENDPOINTS.RECIPE_INGREDIENTS_LIST, {recipeIds:  this.chosenIds})
+                .then(response => this.recipeAndIngredients = response.data )
         },
         accumulateIngredients() {
             let accumulated = []

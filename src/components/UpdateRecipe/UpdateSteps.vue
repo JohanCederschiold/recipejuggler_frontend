@@ -57,7 +57,8 @@ export default {
             updateMode: false,
             recipeStepsInOrder: [],
             newStep: '',
-            recipeId : null
+            recipeId : null,
+            changesMade : false
         }
     },
     methods: {
@@ -75,21 +76,25 @@ export default {
         startUpdate() {
             this.updateMode = true
             this.recipeId = this.recipe.recipeId
+            this.changesMade = true
         },
         stopUpdating() {
 
-            console.log('My steps ', this.recipeStepsInOrder)
-
-            const message = {
-                recipeId: this.recipeId,
-                steps: this.recipeStepsInOrder
+            if(!this.changesMade) {
+                this.$router.replace('allrecipes')
+            } else {
+                const message = {
+                    recipeId: this.recipeId,
+                    steps: this.recipeStepsInOrder
+                }
+                axios.put(Endpoints.MAIN + Endpoints.STEPS_UPDATE, message)
+                    .then(res => {
+                        if (res.status === 202) {
+                            this.$router.replace('allrecipes')
+                        }
+                    })
             }
-            axios.put(Endpoints.MAIN + Endpoints.STEPS_UPDATE, message)
-                .then(res => {
-                    if (res.status === 202) {
-                        this.$router.replace('allrecipes')
-                    }
-                })
+
 
         },
         addStep() {
