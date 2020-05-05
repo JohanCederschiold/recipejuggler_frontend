@@ -1,6 +1,6 @@
 <template>
     <div>
-        {{recipeStepsInOrder}}
+        {{recipe}}
         <div v-if="!updateMode">
             <div v-for="step in recipeStepsInOrder" :key="step.id">{{step.sequence}}: {{step.instruction}}</div>
             <b-button @click="startUpdate" variant="success">Ändra</b-button> 
@@ -51,7 +51,7 @@
 import Endpoints from '@/constants/endpoints.json'
 import axios from 'axios'
 export default {
-    props: ['steps'],
+    props: ['recipe'],
     data: function () {
         return {
             updateMode: false,
@@ -74,7 +74,7 @@ export default {
         },
         startUpdate() {
             this.updateMode = true
-            this.recipeId = this.steps[0].recipeid
+            this.recipeId = this.recipe.recipeId
         },
         stopUpdating() {
 
@@ -84,7 +84,6 @@ export default {
                 recipeId: this.recipeId,
                 steps: this.recipeStepsInOrder
             }
-            console.log('Sending ', message.steps)
             axios.put(Endpoints.MAIN + Endpoints.STEPS_UPDATE, message)
                 .then(res => {
                     if (res.status === 202) {
@@ -134,7 +133,7 @@ export default {
         },
     },
     created() {
-            this.recipeStepsInOrder = JSON.parse(JSON.stringify(this.steps)).sort(this.compare)
+            this.recipeStepsInOrder = JSON.parse(JSON.stringify(this.recipe.steps)).sort(this.compare)
     }
 }
 </script>

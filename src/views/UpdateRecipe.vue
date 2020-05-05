@@ -19,6 +19,7 @@
         <div v-if="updateStep === 3">
             <div>Kontrollera receptets instruktioner och gå vidare.</div>
             <UpdateSteps    :steps="recipeToUpdate.steps"
+                            :recipe="recipeToUpdate"
                             @moveBack="moveBackward"/>
         </div>
         <div class="navigationButtons">
