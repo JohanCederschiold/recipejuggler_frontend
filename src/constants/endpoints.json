@@ -12,5 +12,6 @@
         "DELETE_RECIPE_INGREDIENT": "/recipe-ingredient/delete/",
         "RECIPE_INGREDIENTS_LIST": "/recipe-ingredient/post/listRecipeIngredients",
         "SEARCH_TITLE" : "/recipe/find/searchstring/",
-        "SEARCH_INGREDIENT" : "/recipe/find/ingredient/"
+        "SEARCH_INGREDIENT" : "/recipe/find/ingredient/",
+        "UPDATE_RECIPE" : "/recipe/update"
     }

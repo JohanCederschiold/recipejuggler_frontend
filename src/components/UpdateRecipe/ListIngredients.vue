@@ -27,6 +27,16 @@
                     <RegisterNewIngredient v-on:unitChosen="setUnit"  />
                 </b-modal>
             </div>
+            <div class="navigationButtons">
+            <b-button   @click="goBack" 
+                        variant="danger">
+                            Bakåt
+            </b-button>
+            <b-button   @click="goForward"
+                        variant="primary">
+                            Gå vidare
+            </b-button>
+        </div>
     </div>
 </template>
 <script>
@@ -151,6 +161,12 @@ export default {
         },
         addIngredientToIngredientList() {
             this.$emit('addToIngredientList', this.chosenIngredient)
+        },
+        goBack(){
+            this.$emit('goBack')
+        },
+        goForward(){
+            this.$emit('goForward')
         }
     },
     data: function () {
@@ -186,5 +202,11 @@ export default {
         margin-left: 1rem;
         margin-right: 1rem;
     }
+
+    .navigationButtons {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+
 
 </style>

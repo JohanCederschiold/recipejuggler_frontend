@@ -6,13 +6,17 @@
             <Details    :originalTitle="title" 
                         :originalInstructions="instructions"
                         :originalPreptime ="preptime"
-                        :originalPortions ="portions"/>
+                        :originalPortions ="portions"
+                        :currentRecipe="recipeToUpdate"
+                        @nextStep="moveForward"/>
         </div>
         <div v-if="updateStep === 2">
             <div>
                 <div>Kontrollera receptets ingredienser och gå vidare.</div>
                 <Ingredients    :ingredients="recipeToUpdate.ingredients"
                                 :currentRecipe="recipeToUpdate"
+                                @goBack="moveBackward"
+                                @goForward="moveForward"
                                 class="ingredientBlock" />
             </div>
         </div>
@@ -21,18 +25,6 @@
             <UpdateSteps    :steps="recipeToUpdate.steps"
                             :recipe="recipeToUpdate"
                             @moveBack="moveBackward"/>
-        </div>
-        <div class="navigationButtons">
-            <b-button   @click="moveBackward" 
-                        v-if="updateStep === 2"
-                        variant="danger">
-                            Bakåt
-            </b-button>
-            <b-button   @click="moveForward"
-                        v-if="updateStep !==3"
-                        variant="primary">
-                            Gå vidare
-            </b-button>
         </div>
     </div>
 </template>
@@ -51,19 +43,8 @@ export default {
             if (this.$route.params.id !== undefined && this.$route.params.id !== undefined) {
                 axios.get(ENDPOINTS.MAIN + ENDPOINTS.GET_RECIPE + this.$route.params.id)
                     .then(response => this.recipeToUpdate = response.data)
-
-
-/*
-                fetch(this.$store.state.mainEndpoint + this.getCompleteRecipeEndpoint + this.$route.params.id)
-                    .then(response => {return response.json()})
-                    .then(result => this.recipeToUpdate = result)*/
             }
         },
-        /*
-        addToIngredients(newIngredient) {
-            console.log(newIngredient)
-            this.recipeToUpdate.ingredients.push(newIngredient)
-        },*/
         moveForward() {
             if (this.updateStep !== this.numberOfUpdateSteps) {
                 this.updateStep++
@@ -77,7 +58,6 @@ export default {
     },
     data: function () {
         return {
-            //getCompleteRecipeEndpoint: '/recipe-ingredient/get/complete/id/',
             recipeToUpdate: null,
             title: this.$route.params.title,
             instructions: this.$route.params.instructions,
