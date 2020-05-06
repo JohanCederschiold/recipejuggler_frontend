@@ -90,7 +90,8 @@ export default {
                 axios.put(Endpoints.MAIN + Endpoints.STEPS_UPDATE, message)
                     .then(res => {
                         if (res.status === 202) {
-                            
+                            this.$store.dispatch('getAllRecipes')
+                            this.$store.dispatch('getAllIngredients')
                             this.$router.replace('allrecipes')
                         }
                     })

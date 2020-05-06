@@ -6,7 +6,7 @@
     </div>
 </template>
 <script>
-import Recipe from '../components/shared/Recipe.vue'
+import Recipe from '@/components/shared/Recipe.vue'
 export default {
     methods: {
         chooseRecipe(aRecipe) {
@@ -21,7 +21,6 @@ export default {
         return {
             modalShow: false,
             chosenRecipe: '',
-            //allRecipes: []
         }
     },
     components: {
