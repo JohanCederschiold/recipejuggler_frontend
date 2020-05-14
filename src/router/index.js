@@ -16,7 +16,7 @@ const routes = [
     component: AddRecipe
   },
   {
-    path: '/home',
+    path: '/',
     name: 'home',
     component: Home
   },
