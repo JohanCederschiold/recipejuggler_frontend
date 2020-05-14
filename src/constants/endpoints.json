@@ -1,5 +1,5 @@
     {
-        "MAIN": "http://jpdc.se/api/",
+        "MAIN": "http://localhost:8080",
         "ADD_RECIPE": "/recipe/add",
         "ALL_RECIPES": "/recipe/all",
         "ALL_INGREDIENTS": "/ingredient/all",

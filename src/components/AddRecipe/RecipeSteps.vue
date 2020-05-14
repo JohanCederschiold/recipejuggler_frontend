@@ -51,6 +51,7 @@ export default {
                 this.stepInstructions[this.currentlyChanginStep] = this.instruction
                 this.currentlyChanginStep = null
             }
+            this.instruction = ''
 
         },
         moveUp(index) {

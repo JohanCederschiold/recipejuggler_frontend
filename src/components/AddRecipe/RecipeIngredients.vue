@@ -1,7 +1,6 @@
 <template>
     <div>
         <h1>Registrera ingredienser</h1>
-        {{ingredients}}
         <p>Registrera ingredienserna till receptet <strong>{{ currentRecipe.title }}</strong></p>
         <h2>Ingredienser till {{currentRecipe.title}}</h2>
         <p v-for="(recipeIngredient, index) in registeredRecipeIngredients" :key="recipeIngredient.name">
@@ -11,8 +10,8 @@
             </b-button>
         </p>
             <label for="input-with-list">Lägg till ingrediens</label>
-            <b-form-input list="input-list" id="input-with-list" v-model="ingredientName" 
-            placeholder="Write ingredient" :disabled="preventSubmit"></b-form-input>
+            <b-form-input   list="input-list" id="input-with-list" v-model="ingredientName" 
+                            placeholder="Write ingredient" :disabled="editing"></b-form-input>
             <b-form-datalist id="input-list" :options="ingredients"></b-form-datalist>
 
         <b-button type="submit" variant="primary" @click="onSubmit" >Submit</b-button>
@@ -43,11 +42,11 @@ export default {
             registeredRecipeIngredients: [],
             currentIngredientUnit : '',
             notFinishedWithIngredients: true,
+            editing: false,
             ingredientName: null,
             amount: null,
             ingredientId: null,
             namePlaceholderMessage: 'Write name of ingredient',
-            preventSubmit: false
         }
     },
     computed: {
@@ -84,16 +83,20 @@ export default {
             this.amount = volumeValue
             this.registerNewRecipeIngredient()
             this.notFinishedWithIngredients = false
+            this.editing = false
         },
         onSubmit(event){
-            event.preventDefault()
-            let ingredientObjekt = this.getUnit()
-            if(ingredientObjekt === null) {
-                this.currentIngredientUnit = null
-            } else {
-                this.currentIngredientUnit = ingredientObjekt.units
-                this.ingredientId = ingredientObjekt.id
-                this.preventSubmit = true
+            if (this.ingredientName != '') {
+                event.preventDefault()
+                this.notFinishedWithIngredients = true
+                this.editing = true
+                let ingredientObjekt = this.getUnit()
+                if(ingredientObjekt === null) {
+                    this.currentIngredientUnit = null
+                } else {
+                    this.currentIngredientUnit = ingredientObjekt.units
+                    this.ingredientId = ingredientObjekt.id
+                }
             }
         },
         onReset(){
@@ -101,7 +104,7 @@ export default {
             this.ingredientName= null
             this.amount= null
             this.ingredientId= null
-            this.preventSubmit = false
+            this.editing = false
         },
         pushToRegistered(registeredId){
             let registeredRecipeIngredient = {
@@ -157,7 +160,6 @@ export default {
                 .then(response => {
                     this.ingredientId = response.data.id
                     this.$store.dispatch('getAllIngredients')
-                    this.preventSubmit = false
                 })
         },
         registerNewRecipeIngredient() {

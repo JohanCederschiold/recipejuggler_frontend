@@ -1,6 +1,5 @@
 <template>
     <div>
-        {{recipe}}
         <div v-if="!updateMode">
             <div v-for="step in recipeStepsInOrder" :key="step.id">{{step.sequence}}: {{step.instruction}}</div>
             <b-button @click="startUpdate" variant="success">Ändra</b-button> 
