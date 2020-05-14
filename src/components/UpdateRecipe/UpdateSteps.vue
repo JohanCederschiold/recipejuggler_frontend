@@ -87,6 +87,8 @@ export default {
                     recipeId: this.recipeId,
                     steps: this.recipeStepsInOrder
                 }
+
+
                 axios.put(Endpoints.MAIN + Endpoints.STEPS_UPDATE, message)
                     .then(res => {
                         if (res.status === 202) {
