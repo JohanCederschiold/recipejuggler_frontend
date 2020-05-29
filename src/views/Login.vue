@@ -1,14 +1,11 @@
 <template>
-    <div>
-        <input type="text" name="email" id="email" v-model="email" placeholder="Email">
-        <input type="text" name="password" id="password" v-model="password" placeholder="Password">
-        <button @click="loginUser">Login</button>
-        <button @click="logoutUser">Logout</button>
-        <div v-if="this.$store.state.userid">
-            {{this.$store.state.userid}}
+    <div class="screen">
+        <div v-if="!$store.state.loggedin">
+            <input type="text" name="email" id="email" v-model="email" placeholder="Email">
+            <input type="text" name="password" id="password" v-model="password" placeholder="Password">
+            <b-button @click="loginUser" variant ="success">Login</b-button>
         </div>
-        <div v-if="$store.state.loggedin">You are logged in</div>
-        <div v-else>Not logged in</div>
+        <b-button @click="logoutUser" variant="danger" v-else>Logout</b-button>
     </div>
 </template>
 <script>
@@ -23,7 +20,6 @@ export default {
     methods: {
         loginUser() {
             firebase.auth().signInWithEmailAndPassword(this.email, this.password).catch(function(error) {
-            // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
             console.log(errorCode, errorMessage)
@@ -41,5 +37,7 @@ export default {
 }
 </script>
 <style scoped>
-
+    .screen {
+        margin: 2rem;
+    }
 </style>

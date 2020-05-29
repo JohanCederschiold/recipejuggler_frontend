@@ -1,9 +1,9 @@
 <template>
-    <div>
+    <div class="screen">
         <input type="text" name="name" id="name" v-model="name" placeholder="Name">
         <input type="text" name="email" id="email" v-model="email" placeholder="Email">
         <input type="text" name="password" id="password" v-model="password" placeholder="Password">
-        <button @click="createUser">Register</button>
+        <b-button @click="createUser" variant="success">Register</b-button>
     </div>
 </template>
 <script>
@@ -29,5 +29,7 @@ export default {
 }
 </script>
 <style scoped>
-
+    .screen {
+        margin: 2rem;
+    }
 </style> 
