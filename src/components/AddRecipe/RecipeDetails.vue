@@ -12,14 +12,6 @@
                 ></b-form-input>
             </b-form-group>
 
-            <b-form-group id="input-group-2">
-                <b-form-input
-                id="input-2"
-                v-model="recipeOwner"
-                :placeholder="ownerPlaceholderMessage"
-                ></b-form-input>
-            </b-form-group>
-
             <b-form-group id="input-group-3">
                 <b-form-input
                 id="input-3"
@@ -56,7 +48,6 @@ export default {
     data: function() {
         return {
             recipeName: null,
-            recipeOwner: null,
             minutesToPrepare: null,
             noServings: null,
             description: null,
@@ -74,12 +65,10 @@ export default {
         },
         onReset: function() {
             this.recipeName = null
-            this.recipeOwner = null
             this.minutesToPrepare= null,
             this.noServings = null,
             this.description = null,
             this.namePlaceholderMessage = 'Namnge receptet'
-            this.ownerPlaceholderMessage = 'Ditt namn'
             this.minutesPlaceholderMessage = 'Antal minuter för tillagning'
             this.servingsPlaceholderMessage = 'Antal portioner'
             this.descriptionPlaceholderMessage = 'Kort beskrivning'
@@ -88,9 +77,6 @@ export default {
         checkAndSend() {
             if(this.recipeName === null) {
                 this.namePlaceholderMessage = 'Du måste namnge receptet'
-            }
-            if(this.recipeOwner === null) {
-                this.ownerPlaceholderMessage = 'Du måste ge ett namn'
             }
             if(this.minutesToPrepare === null){
                 this.minutesPlaceholderMessage = 'Du måste ange ett minutantal'
@@ -101,7 +87,7 @@ export default {
             if(this.description === null ){
                 this.descriptionPlaceholderMessage = "Du måste ange en beskrivning"
             }
-            if(this.recipeName !== null && this.recipeOwner !== null ){
+            if(this.recipeName !== null ){
                 this.registerRecipe()
             }
         },
@@ -109,7 +95,7 @@ export default {
             let postRequest =
                 { 
                     title : this.recipeName , 
-                    owner : this.recipeOwner, 
+                    owner : this.$store.state.userid, 
                     preparationTimeMinutes: this.minutesToPrepare,
                     noPortions: this.noServings,
                     instructions: this.description

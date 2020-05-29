@@ -7,12 +7,24 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    mainEndpoint: 'http://localhost:8080',
     chosenDrinks: [],
     allRecipes: null,
-    allIngredients: null
+    allIngredients: null,
+    userid: null,
+    loggedin: false
+
   },
   mutations: {
+    setUser(state, userid){
+      console.log('Called', userid)
+      if(userid !== null ) {
+        state.userid = userid,
+        state.loggedin = true
+      } else {
+        state.userid = null
+        state.loggedin = false
+      }
+    },
     addChosenDrinkId(state, recipe) {
       recipe.id = new Date().getTime()
       state.chosenDrinks.push(recipe)
