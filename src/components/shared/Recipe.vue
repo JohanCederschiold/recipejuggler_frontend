@@ -47,11 +47,7 @@ export default {
         hideModal(){
             this.$emit('closeModal')
         },
-        sendRecipeId(recipeId, recipeTitle) {
-            /*
-            const ingredientsPerPortion = ingredients.map( item =>  { return { ...item, amount: item.amount / this.recipe.noPortions }})
-            this.$store.commit('addAccumulatedIngredients', ingredientsPerPortion)*/
-            
+        sendRecipeId(recipeId, recipeTitle) {          
             this.$store.commit('addChosenDrinkId', { recipeId: recipeId, title: recipeTitle})
 
         }, 
