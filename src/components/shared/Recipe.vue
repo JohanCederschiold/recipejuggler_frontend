@@ -2,7 +2,6 @@
     <div>
         <b-modal hide-footer hide-header v-model="show">
             <h1>{{recipe.title}}</h1>
-            
             <div>{{completeRecipe.instructions}}</div>
             <div>Tillagning: {{completeRecipe.preparationTimeMinutes}} minuter</div>
             <div>Antal portioner: {{completeRecipe.noPortions}} personer</div>
@@ -20,7 +19,7 @@
             </ol>
         <b-button class="mt-3" block @click="sendRecipeId(completeRecipe.recipeId, completeRecipe.title)">Add to list</b-button>
         <b-button class="mt-3" block @click="hideModal">Close Me</b-button>
-        <b-button class="mt-3" block @click="updateRecipe">Update</b-button>
+        <b-button class="mt-3" block @click="updateRecipe" v-if="$store.state.userid === recipe.owner">Update</b-button>
         </b-modal>
     </div>
 </template>
@@ -30,16 +29,11 @@ import Endpoints from '@/constants/endpoints.json'
 export default {
     data: function () {
         return {
-            //localEndpoint: '/recipe-ingredient/get/complete/id/',
             completeRecipe: {},
             sortedSteps: []
         }
     },
     methods: {
-        /*
-        renderURL(localEndpoint, id) {
-            return this.$store.state.mainEndpoint + localEndpoint + id
-        },*/
         updateRecipe() {
             this.$router.push({name : 'update', params: this.recipe} )
         },

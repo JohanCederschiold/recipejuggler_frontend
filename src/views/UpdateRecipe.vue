@@ -46,7 +46,7 @@ export default {
             }
         },
         moveForward() {
-            if (this.updateStep !== this.numberOfUpdateSteps) {
+            if (this.updateStep !== this.numberOfUpdateSteps && this.recipeToUpdate.owner === this.$store.state.userid) {
                 this.updateStep++
             } 
         },
