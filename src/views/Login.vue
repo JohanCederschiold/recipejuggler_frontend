@@ -2,8 +2,9 @@
     <div class="screen">
         <div v-if="!$store.state.loggedin">
             <input type="text" name="email" id="email" v-model="email" placeholder="Email">
-            <input type="text" name="password" id="password" v-model="password" placeholder="Password">
+            <input type="password" name="password" id="password" v-model="password" placeholder="Password">
             <b-button @click="loginUser" variant ="success">Login</b-button>
+            <b-button @click="resetPassword" variant ="warning">Forgot password</b-button>
         </div>
         <b-button @click="logoutUser" variant="danger" v-else>Logout</b-button>
     </div>
@@ -31,6 +32,9 @@ export default {
                     .auth()
                     .signOut()
                     .then(this.$store.commit('setUser', null))
+        },
+        resetPassword(){
+            this.$router.push({name: 'reset'})
         }
     }
     

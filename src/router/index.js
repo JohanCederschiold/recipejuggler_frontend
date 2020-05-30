@@ -9,6 +9,7 @@ import Search from '../views/Search.vue'
 import Update from '../views/UpdateRecipe.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
+import Reset from '../views/ResetPassword.vue'
 
 Vue.use(VueRouter)
 
@@ -75,6 +76,14 @@ const routes = [
       requiresAuth: false,
     },
   },
+  {
+    path: '/reset',
+    name: 'reset',
+    component: Reset,
+    meta: {
+      requiresAuth: false,
+    },
+  },
 ]
 
 const router = new VueRouter({
@@ -87,7 +96,8 @@ router.beforeEach((to, from, next) =>  {
         to.name === 'allrecipes' ||
         to.name === 'recipelist' ||
         to.name === 'search' ||
-        to.name === 'home'
+        to.name === 'home' ||
+        to.name === 'reset'
         ) && !store.state.loggedin) {
     next({name: 'login'})
   } else {
