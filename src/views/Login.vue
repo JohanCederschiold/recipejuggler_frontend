@@ -1,12 +1,16 @@
 <template>
     <div class="screen">
         <div v-if="!$store.state.loggedin">
+            <h1>Logga in</h1>
             <input type="text" name="email" id="email" v-model="email" placeholder="Email">
             <input type="password" name="password" id="password" v-model="password" placeholder="Password">
             <b-button @click="loginUser" variant ="success">Login</b-button>
             <b-button @click="resetPassword" variant ="warning">Forgot password</b-button>
         </div>
-        <b-button @click="logoutUser" variant="danger" v-else>Logout</b-button>
+        <div v-else>
+            <h1>Du är inloggad</h1>
+            <b-button @click="logoutUser" variant="danger">Logout</b-button>
+        </div>
     </div>
 </template>
 <script>
